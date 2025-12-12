@@ -2,14 +2,37 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <title>Цирк Никулина</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link rel="stylesheet" href="style.css">
-</head>
-<body>
-  <div id="app"></div>
+  <title>🎪 Цирк Никулина</title>
 
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+  />
+
+  <!-- Telegram Mini App API -->
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <div id="app" class="container">
+    <h1>🎪 Цирк Никулина</h1>
+
+    <div class="grid">
+      <div class="button" data-action="news">📰 Новости</div>
+      <div class="button" data-action="schedule">🎭 Расписание</div>
+      <div class="button" data-action="artists">🤹 Артисты</div>
+      <div class="button" data-action="contacts">📍 Контакты</div>
+    </div>
+
+    <div class="button-big" data-action="tickets">
+      🎟 БИЛЕТЫ
+    </div>
+  </div>
+
+  <!-- App logic -->
   <script src="app.js"></script>
 </body>
 </html>
