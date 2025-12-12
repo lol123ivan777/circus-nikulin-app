@@ -82,6 +82,35 @@ async function openArtists(page = 0) {
   `;
 }
 
+async function openSchedule(month = "december_2025") {
+  const res = await fetch("/data/schedule.json");
+  const data = await res.json();
+  const monthData = data[month];
+
+  app.innerHTML = `
+    <div class="back" onclick="renderHome()">← Назад</div>
+    <h1>📅 ${monthData.title}</h1>
+
+    <div class="menu">
+      <button onclick="openSchedule('december_2025')">Декабрь 2025</button>
+      <button onclick="openSchedule('january_2026')">Январь 2026</button>
+    </div>
+
+    <div class="list">
+      ${monthData.shows.map(d => `
+        <div class="card">
+          <strong>${d.day} · ${d.weekday}</strong><br>
+          ${
+            d.times === "OFF"
+              ? "Выходной"
+              : d.times.join(" · ")
+          }
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
 /* ---------- NEWS (пока шаблон) ---------- */
 function openNews() {
   tg.MainButton.hide();
