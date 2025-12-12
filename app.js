@@ -30,17 +30,13 @@ function renderHome() {
 }
 
 /* ---------- SCHEDULE (ЕДИНСТВЕННАЯ ВЕРСИЯ) ---------- */
-async function openSchedule(month = "december_2025") {
+
+    async function openSchedule(month = "december_2025") {
   tg.MainButton.hide();
 
   const res = await fetch("/data/schedule.json");
   const data = await res.json();
   const monthData = data[month];
-
-  if (!monthData) {
-    app.innerHTML = `<div class="card">Расписание не найдено</div>`;
-    return;
-  }
 
   app.innerHTML = `
     <div class="back" onclick="renderHome()">← Назад</div>
@@ -51,11 +47,36 @@ async function openSchedule(month = "december_2025") {
       <button onclick="openSchedule('january_2026')">Январь 2026</button>
     </div>
 
-    <div class="list">
-      ${monthData.shows.map(d => `
-        <div class="card">
-          <strong>${d.day} · ${d.weekday}</strong><br>
-          ${d.times === "OFF" ? "Выходной" : d.times.join(" · ")}
+    <div class="schedule-grid">
+      ${monthData.shows.map(day => `
+        <div class="day-card">
+          <div class="day-title">
+            ${day.day} · ${day.weekday}
+          </div>
+
+          ${
+            day.slots === "OFF"
+              ? `<div class="off">Выходной</div>`
+              : day.slots.map(slot => `
+                  <div class="slot">
+                    ${
+                      slot.status === "available"
+                        ? `<button class="time-btn"
+                            onclick="tg.openLink('${slot.url}')">
+                            ${slot.time}
+                          </button>`
+                        : `<div class="time-btn disabled">
+                            ${slot.time}
+                          </div>`
+                    }
+                    ${
+                      slot.status === "soldout"
+                        ? `<div class="soldout">Билетов нет</div>`
+                        : ``
+                    }
+                  </div>
+                `).join("")
+          }
         </div>
       `).join("")}
     </div>
