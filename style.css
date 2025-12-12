@@ -24,14 +24,21 @@ h1 {
   margin-bottom: 16px;
 }
 
+.menu {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
 .menu button {
-  flex: 1;
-  padding: 14px;
-  border-radius: 14px;
+  width: 100%;
+  padding: 20px;
+  border-radius: 18px;
   border: none;
   background: #1f1f1f;
   color: white;
-  font-size: 15px;
+  font-size: 17px;
+  font-weight: 600;
 }
 
 .back {
