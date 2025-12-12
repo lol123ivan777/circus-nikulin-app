@@ -39,3 +39,13 @@ function openTickets() {
 function openContacts() {
   alert("Контакты — тут красиво оформим");
 }
+
+async function loadSchedule() {
+  const res = await fetch("/data/schedule.json");
+  return res.json();
+}
+
+async function openSchedule() {
+  const data = await loadSchedule();
+  console.log(data);
+}
