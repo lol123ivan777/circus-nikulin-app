@@ -47,35 +47,19 @@ function renderHome() {
       <button onclick="openSchedule('january_2026')">Январь 2026</button>
     </div>
 
-    <div class="schedule-grid">
+    <div class="list">
       ${monthData.shows.map(day => `
-        <div class="day-card">
-          <div class="day-title">
-            ${day.day} · ${day.weekday}
-          </div>
+        <div class="card">
+          <strong>${day.day} · ${day.weekday}</strong><br>
 
           ${
             day.slots === "OFF"
-              ? `<div class="off">Выходной</div>`
-              : day.slots.map(slot => `
-                  <div class="slot">
-                    ${
-                      slot.status === "available"
-                        ? `<button class="time-btn"
-                            onclick="tg.openLink('${slot.url}')">
-                            ${slot.time}
-                          </button>`
-                        : `<div class="time-btn disabled">
-                            ${slot.time}
-                          </div>`
-                    }
-                    ${
-                      slot.status === "soldout"
-                        ? `<div class="soldout">Билетов нет</div>`
-                        : ``
-                    }
-                  </div>
-                `).join("")
+              ? "<div class='soldout'>Выходной</div>"
+              : day.slots.map(slot =>
+                  slot.status === "available"
+                    ? `<button class="time" onclick="tg.openLink('${slot.url}')">${slot.time}</button>`
+                    : `<div class="soldout">${slot.time} · билетов нет</div>`
+                ).join("")
           }
         </div>
       `).join("")}
