@@ -9,15 +9,14 @@ body {
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
 
-  /* Фиолетовый неон + картинка */
   background:
     linear-gradient(
-      rgba(40, 0, 70, 0.75),
-      rgba(10, 0, 25, 0.85)
+      rgba(55, 0, 90, 0.75),
+      rgba(10, 0, 25, 0.9)
     ),
-    url("assets/ffc4f6c27a2acafe6d4c7a9891b88650.jpg") center / cover no-repeat;
+    url("assets/ffc4f6c27a2acafe6d4c7a9891b88650.jpg")
+      center / cover no-repeat;
 
-  /* если картинка не загрузится */
   background-color: #2a003f;
 }
 
@@ -28,53 +27,87 @@ body {
 
 /* ---------- TITLES ---------- */
 h1 {
-  margin: 0 0 18px;
+  margin: 0 0 20px;
   font-size: 26px;
   font-weight: 700;
-  text-shadow: 0 0 12px rgba(160, 80, 255, 0.4);
+  text-shadow:
+    0 0 12px rgba(180, 120, 255, 0.6),
+    0 0 24px rgba(140, 80, 255, 0.4);
 }
 
 /* ---------- MENU ---------- */
 .menu {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-  margin-bottom: 20px;
+  gap: 16px;
+  margin-bottom: 24px;
 }
 
-/* ---------- BUTTONS (СТЕКЛО) ---------- */
+/* ---------- BUTTONS (НЕОН + ПРОЗРАЧНОСТЬ) ---------- */
 .menu button,
 .time-btn {
   width: 100%;
-  padding: 20px;
-  border-radius: 20px;
-  border: 1px solid rgba(200, 150, 255, 0.25);
+  padding: 22px;
+  border-radius: 22px;
 
-  background: rgba(120, 60, 200, 0.25);
-  backdrop-filter: blur(10px);
+  /* полностью прозрачная середина */
+  background: rgba(0, 0, 0, 0.08);
+
+  /* градиентная рамка */
+  border: 2px solid transparent;
+  background-image:
+    linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.05)),
+    linear-gradient(
+      135deg,
+      #c77dff,
+      #9d4edd,
+      #7b2cbf
+    );
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  backdrop-filter: blur(6px);
 
   color: #fff;
   font-size: 17px;
   font-weight: 600;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.4px;
+
+  text-shadow: 0 0 10px rgba(210, 160, 255, 0.7);
 
   box-shadow:
-    0 0 12px rgba(160, 80, 255, 0.25),
-    inset 0 0 12px rgba(255, 255, 255, 0.05);
+    0 0 14px rgba(180, 90, 255, 0.55),
+    0 0 30px rgba(120, 60, 255, 0.35);
 
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
 }
 
+/* ---------- НАЖАТИЕ ---------- */
 .menu button:active,
 .time-btn:active {
-  transform: scale(0.97);
-  box-shadow: 0 0 18px rgba(180, 100, 255, 0.6);
+  transform: scale(0.96);
+
+  background-image:
+    linear-gradient(rgba(140, 60, 255, 0.15), rgba(140, 60, 255, 0.15)),
+    linear-gradient(
+      135deg,
+      #e0aaff,
+      #c77dff,
+      #9d4edd
+    );
+
+  box-shadow:
+    0 0 22px rgba(220, 150, 255, 0.9),
+    0 0 40px rgba(160, 80, 255, 0.7);
 }
 
 /* ---------- BACK ---------- */
 .back {
-  margin-bottom: 14px;
-  opacity: 0.75;
+  margin-bottom: 16px;
+  opacity: 0.8;
   cursor: pointer;
   font-size: 15px;
 }
@@ -83,19 +116,20 @@ h1 {
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 14px;
 }
 
 /* ---------- CARDS ---------- */
 .card {
-  background: rgba(20, 10, 35, 0.75);
+  background: rgba(15, 5, 30, 0.7);
   backdrop-filter: blur(8px);
 
   border-radius: 18px;
   padding: 14px;
 
-  border: 1px solid rgba(180, 120, 255, 0.2);
-  box-shadow: 0 0 16px rgba(120, 60, 200, 0.25);
+  border: 1px solid rgba(180, 120, 255, 0.25);
+  box-shadow:
+    0 0 18px rgba(130, 70, 255, 0.35);
 }
 
 .day-title {
