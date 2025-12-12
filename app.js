@@ -1,38 +1,56 @@
 const app = document.getElementById("app");
 const tg = window.Telegram?.WebApp;
 
+/* ---------- TELEGRAM INIT ---------- */
 if (tg) {
   tg.ready();
   tg.expand();
+
+  tg.MainButton.setText("🎟 Купить билеты");
+  tg.MainButton.onClick(() => {
+    tg.openLink("https://circusnikulin.ru/tickets");
+  });
+  tg.MainButton.show();
 }
 
-/* ---------- MAIN BUTTON ---------- */
-tg.MainButton.setText("🎟 Купить билеты");
-tg.MainButton.onClick(() => {
-  tg.openLink("https://circusnikulin.ru/tickets");
-});
-tg.MainButton.show();
+/* ---------- HELPERS ---------- */
+function showMainButton() {
+  if (tg) tg.MainButton.show();
+}
+
+function hideMainButton() {
+  if (tg) tg.MainButton.hide();
+}
+
+function openLink(url) {
+  if (tg) {
+    tg.openLink(url);
+  } else {
+    window.open(url, "_blank");
+  }
+}
 
 /* ---------- HOME ---------- */
 function renderHome() {
-  tg.MainButton.show();
+  showMainButton();
+
   app.innerHTML = `
     <h1>🎪 Цирк Никулина</h1>
 
     <div class="menu">
-  <button onclick="openSchedule('december_2025')">📅 Расписание</button>
-  <button onclick="openArtists()">🤹 Артисты</button>
-  <button onclick="openAbout()">🎪 О цирке</button>
-  <button onclick="openRoute()">🗺 Как добраться</button>
-  <button onclick="openRules()">📜 Правила посещения</button>
-  <button onclick="openContacts()">📍 Контакты</button>
-</div>
+      <button onclick="openSchedule('december_2025')">📅 Расписание</button>
+      <button onclick="openArtists()">🤹 Артисты</button>
+      <button onclick="openAbout()">🎪 О цирке</button>
+      <button onclick="openRoute()">🗺 Как добраться</button>
+      <button onclick="openRules()">📜 Правила посещения</button>
+      <button onclick="openContacts()">📍 Контакты</button>
+    </div>
   `;
 }
 
 /* ---------- SCHEDULE ---------- */
 async function openSchedule(monthKey) {
-  tg.MainButton.hide();
+  hideMainButton();
 
   const res = await fetch("/data/schedule.json");
   const data = await res.json();
@@ -57,22 +75,11 @@ async function openSchedule(monthKey) {
               ? `<div class="soldout">Выходной</div>`
               : `
                 <div class="times">
-                  ${day.slots.map(slot => {
-                    if (slot.status === "available") {
-                      return `
-                        <button class="time-btn"
-                          onclick="tg.openLink('${slot.url}')">
-                          ${slot.time}
-                        </button>
-                      `;
-                    } else {
-                      return `
-                        <div class="soldout">
-                          ${slot.time} · билетов нет
-                        </div>
-                      `;
-                    }
-                  }).join("")}
+                  ${day.slots.map(slot =>
+                    slot.status === "available"
+                      ? `<button class="time-btn" onclick="openLink('${slot.url}')">${slot.time}</button>`
+                      : `<div class="soldout">${slot.time} · билетов нет</div>`
+                  ).join("")}
                 </div>
               `
           }
@@ -82,9 +89,10 @@ async function openSchedule(monthKey) {
   `;
 }
 
-/* ---------- ARTISTS (пока заглушка) ---------- */
+/* ---------- ARTISTS ---------- */
 function openArtists() {
-  tg.MainButton.hide();
+  hideMainButton();
+
   app.innerHTML = `
     <div class="back" onclick="renderHome()">← Назад</div>
     <h1>🤹 Артисты</h1>
@@ -94,7 +102,7 @@ function openArtists() {
 
 /* ---------- CONTACTS ---------- */
 async function openContacts() {
-  tg.MainButton.hide();
+  hideMainButton();
 
   const res = await fetch("/data/contacts.json");
   const c = await res.json();
@@ -107,17 +115,16 @@ async function openContacts() {
       📍 ${c.address}<br><br>
       ☎ ${c.phone}<br>
       🏢 Администрация: ${c.adminPhone}<br><br>
-      🌐 <a href="${c.vk}">VK</a><br>
-      ✈ <a href="${c.telegram}">Telegram</a><br><br>
+      🌐 <a href="${c.vk}" target="_blank">VK</a><br>
+      ✈ <a href="${c.telegram}" target="_blank">Telegram</a><br><br>
       ✉ ${c.email}
     </div>
   `;
 }
 
-/---------------О ЦИРКЕ----------------
-
+/* ---------- ABOUT ---------- */
 async function openAbout() {
-  tg.MainButton.hide();
+  hideMainButton();
 
   const res = await fetch("/data/about.json");
   const data = await res.json();
@@ -129,10 +136,9 @@ async function openAbout() {
   `;
 }
 
-/----------------как добраться-------
-
+/* ---------- ROUTE ---------- */
 async function openRoute() {
-  tg.MainButton.hide();
+  hideMainButton();
 
   const res = await fetch("/data/route.json");
   const data = await res.json();
@@ -144,11 +150,9 @@ async function openRoute() {
   `;
 }
 
-/----------правила-------
-
-
+/* ---------- RULES ---------- */
 async function openRules() {
-  tg.MainButton.hide();
+  hideMainButton();
 
   const res = await fetch("/data/rules.json");
   const data = await res.json();
@@ -163,7 +167,6 @@ async function openRules() {
     </div>
   `;
 }
-
 
 /* ---------- INIT ---------- */
 renderHome();
