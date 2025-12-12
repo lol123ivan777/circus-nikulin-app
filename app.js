@@ -1,8 +1,10 @@
 const app = document.getElementById("app");
-const tg = window.Telegram.WebApp;
+const tg = window.Telegram?.WebApp;
 
-tg.ready();
-tg.expand();
+if (tg) {
+  tg.ready();
+  tg.expand();
+}
 
 /* ---------- MAIN BUTTON ---------- */
 tg.MainButton.setText("🎟 Купить билеты");
