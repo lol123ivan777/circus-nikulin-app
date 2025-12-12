@@ -88,14 +88,23 @@ function openArtists() {
 }
 
 /* ---------- CONTACTS ---------- */
-function openContacts() {
+async function openContacts() {
   tg.MainButton.hide();
+
+  const res = await fetch("/data/contacts.json");
+  const c = await res.json();
+
   app.innerHTML = `
     <div class="back" onclick="renderHome()">← Назад</div>
     <h1>📍 Контакты</h1>
+
     <div class="card">
-      Москва, Цветной бульвар<br>
-      Официальный сайт и соцсети
+      📍 ${c.address}<br><br>
+      ☎ ${c.phone}<br>
+      🏢 Администрация: ${c.adminPhone}<br><br>
+      🌐 <a href="${c.vk}">VK</a><br>
+      ✈ <a href="${c.telegram}">Telegram</a><br><br>
+      ✉ ${c.email}
     </div>
   `;
 }
