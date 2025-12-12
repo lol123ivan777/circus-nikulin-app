@@ -2,42 +2,42 @@
   "december_2025": {
     "title": "Декабрь 2025",
     "shows": [
+      { "day": "1", "weekday": "Пн", "slots": "OFF" },
+      { "day": "2", "weekday": "Вт", "slots": "OFF" },
+      { "day": "3", "weekday": "Ср", "slots": "OFF" },
+      { "day": "4", "weekday": "Чт", "slots": "OFF" },
+      { "day": "5", "weekday": "Пт", "slots": "OFF" },
+      { "day": "6", "weekday": "Сб", "slots": "OFF" },
+      { "day": "7", "weekday": "Вс", "slots": "OFF" },
+      { "day": "8", "weekday": "Пн", "slots": "OFF" },
+      { "day": "9", "weekday": "Вт", "slots": "OFF" },
+      { "day": "10", "weekday": "Ср", "slots": "OFF" },
+      { "day": "11", "weekday": "Чт", "slots": "OFF" },
+
       {
         "day": "12",
         "weekday": "Пт",
         "slots": [
-          {
-            "time": "19:00",
-            "url": "https://circusnikulin.ru/tickets?date=2025-12-12-19",
-            "status": "available"
-          }
+          { "time": "19:00", "status": "available", "url": "https://circusnikulin.ru/tickets" }
         ]
       },
       {
         "day": "13",
         "weekday": "Сб",
         "slots": [
-          {
-            "time": "11:00",
-            "url": "https://circusnikulin.ru/tickets?date=2025-12-13-11",
-            "status": "soldout"
-          },
-          {
-            "time": "14:30",
-            "url": "https://circusnikulin.ru/tickets?date=2025-12-13-1430",
-            "status": "available"
-          },
-          {
-            "time": "18:00",
-            "url": "https://circusnikulin.ru/tickets?date=2025-12-13-18",
-            "status": "available"
-          }
+          { "time": "11:00", "status": "available", "url": "https://circusnikulin.ru/tickets" },
+          { "time": "14:30", "status": "available", "url": "https://circusnikulin.ru/tickets" },
+          { "time": "18:00", "status": "available", "url": "https://circusnikulin.ru/tickets" }
         ]
       },
       {
         "day": "14",
         "weekday": "Вс",
-        "slots": "OFF"
+        "slots": [
+          { "time": "11:00", "status": "available", "url": "https://circusnikulin.ru/tickets" },
+          { "time": "14:30", "status": "available", "url": "https://circusnikulin.ru/tickets" },
+          { "time": "18:00", "status": "available", "url": "https://circusnikulin.ru/tickets" }
+        ]
       }
     ]
   },
@@ -49,16 +49,51 @@
         "day": "1",
         "weekday": "Чт",
         "slots": [
-          {
-            "time": "14:30",
-            "url": "https://circusnikulin.ru/tickets?date=2026-01-01-1430",
-            "status": "available"
-          },
-          {
-            "time": "18:00",
-            "url": "https://circusnikulin.ru/tickets?date=2026-01-01-18",
-            "status": "soldout"
-          }
+          { "time": "14:30", "status": "soldout" },
+          { "time": "18:00", "status": "available", "url": "https://circusnikulin.ru/tickets" }
+        ]
+      },
+      {
+        "day": "9",
+        "weekday": "Пт",
+        "slots": [
+          { "time": "11:00", "status": "available", "url": "https://circusnikulin.ru/tickets" },
+          { "time": "14:30", "status": "soldout" },
+          { "time": "18:00", "status": "available", "url": "https://circusnikulin.ru/tickets" }
+        ]
+      },
+      {
+        "day": "10",
+        "weekday": "Сб",
+        "slots": [
+          { "time": "11:00", "status": "soldout" },
+          { "time": "14:30", "status": "soldout" },
+          { "time": "18:00", "status": "available", "url": "https://circusnikulin.ru/tickets" }
+        ]
+      },
+
+      {
+        "day": "13",
+        "weekday": "Вт",
+        "slots": [
+          { "time": "11:00", "status": "available", "url": "https://circusnikulin.ru/tickets" },
+          { "time": "14:30", "status": "available", "url": "https://circusnikulin.ru/tickets" },
+          { "time": "18:00", "status": "available", "url": "https://circusnikulin.ru/tickets" }
+        ]
+      },
+      {
+        "day": "14",
+        "weekday": "Ср",
+        "slots": [
+          { "time": "18:00", "status": "available", "url": "https://circusnikulin.ru/tickets" }
+        ]
+      },
+      {
+        "day": "25",
+        "weekday": "Вс",
+        "slots": [
+          { "time": "14:30", "status": "available", "url": "https://circusnikulin.ru/tickets" },
+          { "time": "18:00", "status": "available", "url": "https://circusnikulin.ru/tickets" }
         ]
       }
     ]
