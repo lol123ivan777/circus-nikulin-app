@@ -51,12 +51,12 @@ h1 {
   border-radius: 22px;
 
   /* полностью прозрачная середина */
-  background: rgba(0, 0, 0, 0.08);
+  background: transparent;
 
-  /* градиентная рамка */
+  /* неоновая градиентная рамка */
   border: 2px solid transparent;
   background-image:
-    linear-gradient(rgba(0,0,0,0.05), rgba(0,0,0,0.05)),
+    linear-gradient(transparent, transparent),
     linear-gradient(
       135deg,
       #c77dff,
@@ -66,23 +66,21 @@ h1 {
   background-origin: border-box;
   background-clip: padding-box, border-box;
 
-  backdrop-filter: blur(6px);
-
   color: #fff;
   font-size: 17px;
   font-weight: 600;
   letter-spacing: 0.4px;
 
-  text-shadow: 0 0 10px rgba(210, 160, 255, 0.7);
+  text-shadow:
+    0 0 10px rgba(210, 160, 255, 0.8);
 
   box-shadow:
-    0 0 14px rgba(180, 90, 255, 0.55),
-    0 0 30px rgba(120, 60, 255, 0.35);
+    0 0 18px rgba(180, 90, 255, 0.7),
+    0 0 36px rgba(120, 60, 255, 0.45);
 
   transition:
     transform 0.15s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+    box-shadow 0.2s ease;
 }
 
 /* ---------- НАЖАТИЕ ---------- */
