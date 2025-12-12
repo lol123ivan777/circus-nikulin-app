@@ -18,10 +18,13 @@ function renderHome() {
     <h1>🎪 Цирк Никулина</h1>
 
     <div class="menu">
-      <button onclick="openSchedule('december_2025')">📅 Расписание</button>
-      <button onclick="openArtists()">🤹 Артисты</button>
-      <button onclick="openContacts()">📍 Контакты</button>
-    </div>
+  <button onclick="openSchedule('december_2025')">📅 Расписание</button>
+  <button onclick="openArtists()">🤹 Артисты</button>
+  <button onclick="openAbout()">🎪 О цирке</button>
+  <button onclick="openRoute()">🗺 Как добраться</button>
+  <button onclick="openRules()">📜 Правила посещения</button>
+  <button onclick="openContacts()">📍 Контакты</button>
+</div>
   `;
 }
 
