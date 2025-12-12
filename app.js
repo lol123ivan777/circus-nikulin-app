@@ -11,77 +11,96 @@ tg.MainButton.onClick(() => {
 });
 tg.MainButton.show();
 
-/* ---------- ROUTER ---------- */
+/* ---------- STATE ---------- */
+let artistPage = 0;
+const ARTISTS_PER_PAGE = 5;
+
+/* ---------- HOME ---------- */
 function renderHome() {
   tg.MainButton.show();
-
   app.innerHTML = `
     <h1>🎪 Цирк Никулина</h1>
-
     <div class="menu">
       <button onclick="openSchedule()">📅 Расписание</button>
-      <button onclick="openArtists()">🤹 Артисты</button>
+      <button onclick="openArtists(0)">🤹 Артисты</button>
       <button onclick="openNews()">📰 Новости</button>
       <button onclick="openContacts()">📍 Контакты</button>
     </div>
   `;
 }
 
-/* ---------- NEWS ---------- */
-async function openNews() {
+/* ---------- SCHEDULE ---------- */
+async function openSchedule() {
   tg.MainButton.hide();
 
-  const res = await fetch("/data/news.json");
-  const news = await res.json();
+  const res = await fetch("/data/schedule.json");
+  const data = await res.json();
 
   app.innerHTML = `
     <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>📰 Новости</h1>
+    <h1>📅 Расписание</h1>
     <div class="list">
-      ${news.map(n => `
+      ${data.map(item => `
         <div class="card">
-          <strong>${n.title}</strong><br>
-          <small>${n.date}</small>
-          <p>${n.text}</p>
+          <strong>${item.title}</strong><br>
+          ${item.date} · ${item.time}
         </div>
       `).join("")}
     </div>
   `;
 }
 
-/* ---------- PLACEHOLDERS ---------- */
-function openSchedule() {
+/* ---------- ARTISTS ---------- */
+async function openArtists(page = 0) {
   tg.MainButton.hide();
-  app.innerHTML = `
-    <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>📅 Расписание</h1>
-    <div class="list">
-      <div class="card">Сюда подключим schedule.json</div>
-    </div>
-  `;
-}
+  artistPage = page;
 
-function openArtists() {
-  tg.MainButton.hide();
+  const res = await fetch("/data/artists.json");
+  const artists = await res.json();
+
+  const start = page * ARTISTS_PER_PAGE;
+  const end = start + ARTISTS_PER_PAGE;
+  const slice = artists.slice(start, end);
+
   app.innerHTML = `
     <div class="back" onclick="renderHome()">← Назад</div>
     <h1>🤹 Артисты</h1>
+
     <div class="list">
-      <div class="card">Сюда подключим artists.json</div>
+      ${slice.map(a => `
+        <div class="card">
+          <strong>${a.name}</strong><br>
+          ${a.genre}
+        </div>
+      `).join("")}
+    </div>
+
+    <div class="menu">
+      ${start > 0 ? `<button onclick="openArtists(${page - 1})">⬅️ Назад</button>` : ""}
+      ${end < artists.length ? `<button onclick="openArtists(${page + 1})">Вперёд ➡️</button>` : ""}
     </div>
   `;
 }
 
+/* ---------- NEWS (пока шаблон) ---------- */
+function openNews() {
+  tg.MainButton.hide();
+  app.innerHTML = `
+    <div class="back" onclick="renderHome()">← Назад</div>
+    <h1>📰 Новости</h1>
+    <div class="card">Здесь будут новости</div>
+  `;
+}
+
+/* ---------- CONTACTS ---------- */
 function openContacts() {
   tg.MainButton.hide();
   app.innerHTML = `
     <div class="back" onclick="renderHome()">← Назад</div>
     <h1>📍 Контакты</h1>
-    <div class="list">
-      <div class="card">
-        Москва, Цветной бульвар<br>
-        Телефон, почта, соцсети
-      </div>
+    <div class="card">
+      Москва, Цветной бульвар<br>
+      Телефон, почта, соцсети
     </div>
   `;
 }
