@@ -1,17 +1,67 @@
-[
-  {
-    "date": "2025-12-20",
-    "title": "Новогоднее шоу",
-    "time": "19:00"
+{
+  "december_2025": {
+    "title": "Декабрь 2025",
+    "shows": [
+      { "day": 1, "weekday": "Пн", "times": "OFF" },
+      { "day": 2, "weekday": "Вт", "times": "OFF" },
+      { "day": 3, "weekday": "Ср", "times": "OFF" },
+      { "day": 4, "weekday": "Чт", "times": "OFF" },
+      { "day": 5, "weekday": "Пт", "times": "OFF" },
+      { "day": 6, "weekday": "Сб", "times": "OFF" },
+      { "day": 7, "weekday": "Вс", "times": "OFF" },
+
+      { "day": 12, "weekday": "Пт", "times": ["19:00"] },
+      { "day": 13, "weekday": "Сб", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 14, "weekday": "Вс", "times": ["11:00", "14:30", "18:00"] },
+
+      { "day": 15, "weekday": "Пн", "times": ["18:00"] },
+      { "day": 16, "weekday": "Вт", "times": ["18:00"] },
+      { "day": 17, "weekday": "Ср", "times": ["18:00"] },
+      { "day": 18, "weekday": "Чт", "times": ["18:00"] },
+
+      { "day": 19, "weekday": "Пт", "times": ["14:00", "18:00"] },
+      { "day": 20, "weekday": "Сб", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 21, "weekday": "Вс", "times": ["11:00", "14:30", "18:00"] },
+
+      { "day": 22, "weekday": "Пн", "times": ["14:30", "18:00"] },
+      { "day": 23, "weekday": "Вт", "times": ["14:30", "18:00"] },
+      { "day": 24, "weekday": "Ср", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 25, "weekday": "Чт", "times": ["11:00", "14:30", "19:00"] },
+      { "day": 26, "weekday": "Пт", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 27, "weekday": "Сб", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 28, "weekday": "Вс", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 29, "weekday": "Пн", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 30, "weekday": "Вт", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 31, "weekday": "Ср", "times": ["11:00", "14:30", "18:00"] }
+    ]
   },
-  {
-    "date": "2025-12-21",
-    "title": "Новогоднее шоу",
-    "time": "13:00"
-  },
-  {
-    "date": "2025-12-21",
-    "title": "Новогоднее шоу",
-    "time": "17:00"
+
+  "january_2026": {
+    "title": "Январь 2026",
+    "shows": [
+      { "day": 1, "weekday": "Чт", "times": ["14:30", "18:00"] },
+      { "day": 2, "weekday": "Пт", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 3, "weekday": "Сб", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 4, "weekday": "Вс", "times": ["11:00", "14:30", "18:00"] },
+
+      { "day": 12, "weekday": "Пн", "times": "OFF" },
+
+      { "day": 13, "weekday": "Вт", "times": ["18:00"] },
+      { "day": 14, "weekday": "Ср", "times": ["18:00"] },
+      { "day": 15, "weekday": "Чт", "times": ["18:00"] },
+      { "day": 16, "weekday": "Пт", "times": ["18:00"] },
+
+      { "day": 17, "weekday": "Сб", "times": ["11:00", "14:30", "18:00"] },
+      { "day": 18, "weekday": "Вс", "times": ["11:00", "14:30", "18:00"] },
+
+      { "day": 19, "weekday": "Пн", "times": "OFF" },
+      { "day": 20, "weekday": "Вт", "times": "OFF" },
+      { "day": 21, "weekday": "Ср", "times": "OFF" },
+      { "day": 22, "weekday": "Чт", "times": "OFF" },
+
+      { "day": 23, "weekday": "Пт", "times": ["18:00"] },
+      { "day": 24, "weekday": "Сб", "times": ["14:30", "18:00"] },
+      { "day": 25, "weekday": "Вс", "times": ["14:30", "18:00"] }
+    ]
   }
-]
+}
