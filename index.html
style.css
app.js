@@ -11,5 +11,5 @@
   <div id="app"></div>
 
   <script src="app.js"></script>
-</body>
+</body>.
 </html>
