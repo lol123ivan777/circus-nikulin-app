@@ -2,88 +2,122 @@
   box-sizing: border-box;
 }
 
+/* ---------- BODY + BACKGROUND ---------- */
 body {
   margin: 0;
-  background: #0b0b0b;
+  min-height: 100vh;
   color: #fff;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
+
+  /* Фиолетовый неон + картинка */
+  background:
+    linear-gradient(
+      rgba(40, 0, 70, 0.75),
+      rgba(10, 0, 25, 0.85)
+    ),
+    url("/bg.jpg") center / cover no-repeat;
+
+  /* если картинка не загрузится */
+  background-color: #2a003f;
 }
 
+/* ---------- APP CONTAINER ---------- */
 #app {
   padding: 16px;
 }
 
+/* ---------- TITLES ---------- */
 h1 {
-  margin: 0 0 16px;
+  margin: 0 0 18px;
+  font-size: 26px;
+  font-weight: 700;
+  text-shadow: 0 0 12px rgba(160, 80, 255, 0.4);
 }
 
-.menu {
-  display: flex;
-  gap: 12px;
-  flex-wrap: wrap;
-  margin-bottom: 16px;
-}
-
+/* ---------- MENU ---------- */
 .menu {
   display: flex;
   flex-direction: column;
   gap: 14px;
+  margin-bottom: 20px;
 }
 
-.menu button {
+/* ---------- BUTTONS (СТЕКЛО) ---------- */
+.menu button,
+.time-btn {
   width: 100%;
   padding: 20px;
-  border-radius: 18px;
-  border: none;
-  background: #1f1f1f;
-  color: white;
+  border-radius: 20px;
+  border: 1px solid rgba(200, 150, 255, 0.25);
+
+  background: rgba(120, 60, 200, 0.25);
+  backdrop-filter: blur(10px);
+
+  color: #fff;
   font-size: 17px;
   font-weight: 600;
+  letter-spacing: 0.3px;
+
+  box-shadow:
+    0 0 12px rgba(160, 80, 255, 0.25),
+    inset 0 0 12px rgba(255, 255, 255, 0.05);
+
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
+.menu button:active,
+.time-btn:active {
+  transform: scale(0.97);
+  box-shadow: 0 0 18px rgba(180, 100, 255, 0.6);
+}
+
+/* ---------- BACK ---------- */
 .back {
-  margin-bottom: 12px;
-  opacity: 0.7;
+  margin-bottom: 14px;
+  opacity: 0.75;
   cursor: pointer;
+  font-size: 15px;
 }
 
+/* ---------- GRID (РАСПИСАНИЕ) ---------- */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 12px;
 }
 
+/* ---------- CARDS ---------- */
 .card {
-  background: #151515;
-  border-radius: 16px;
+  background: rgba(20, 10, 35, 0.75);
+  backdrop-filter: blur(8px);
+
+  border-radius: 18px;
   padding: 14px;
+
+  border: 1px solid rgba(180, 120, 255, 0.2);
+  box-shadow: 0 0 16px rgba(120, 60, 200, 0.25);
 }
 
 .day-title {
-  font-weight: 600;
+  font-weight: 700;
   margin-bottom: 8px;
 }
 
+/* ---------- TIMES ---------- */
 .times {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
-.time-btn {
-  padding: 10px;
-  border-radius: 12px;
-  background: #2a2a2a;
-  color: white;
-  border: none;
-  font-size: 14px;
-}
-
+/* ---------- SOLD OUT ---------- */
 .soldout {
   font-size: 13px;
-  color: #d36b6b;
+  color: #ff9aa2;
+  opacity: 0.9;
 }
 
+/* ---------- LISTS ---------- */
 .card ul {
   padding-left: 18px;
   margin: 0;
