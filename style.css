@@ -83,3 +83,13 @@ h1 {
   font-size: 13px;
   color: #d36b6b;
 }
+
+.card ul {
+  padding-left: 18px;
+  margin: 0;
+}
+
+.card li {
+  margin-bottom: 8px;
+  line-height: 1.4;
+}
