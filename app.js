@@ -112,5 +112,56 @@ async function openContacts() {
   `;
 }
 
+/---------------О ЦИРКЕ----------------
+
+async function openAbout() {
+  tg.MainButton.hide();
+
+  const res = await fetch("/data/about.json");
+  const data = await res.json();
+
+  app.innerHTML = `
+    <div class="back" onclick="renderHome()">← Назад</div>
+    <h1>🎪 ${data.title}</h1>
+    <div class="card">${data.text}</div>
+  `;
+}
+
+/----------------как добраться-------
+
+async function openRoute() {
+  tg.MainButton.hide();
+
+  const res = await fetch("/data/route.json");
+  const data = await res.json();
+
+  app.innerHTML = `
+    <div class="back" onclick="renderHome()">← Назад</div>
+    <h1>🗺 ${data.title}</h1>
+    <div class="card">${data.text.replace(/\n/g, "<br>")}</div>
+  `;
+}
+
+/----------правила-------
+
+
+async function openRules() {
+  tg.MainButton.hide();
+
+  const res = await fetch("/data/rules.json");
+  const data = await res.json();
+
+  app.innerHTML = `
+    <div class="back" onclick="renderHome()">← Назад</div>
+    <h1>📜 ${data.title}</h1>
+    <div class="card">
+      <ul>
+        ${data.items.map(i => `<li>${i}</li>`).join("")}
+      </ul>
+    </div>
+  `;
+}
+
+
 /* ---------- INIT ---------- */
 renderHome();
