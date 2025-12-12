@@ -15,7 +15,7 @@ body {
       rgba(40, 0, 70, 0.75),
       rgba(10, 0, 25, 0.85)
     ),
-    url("/ffc4f6c27a2acafe6d4c7a9891b88650.jpg") center / cover no-repeat;
+    url("assets/ffc4f6c27a2acafe6d4c7a9891b88650.jpg") center / cover no-repeat;
 
   /* если картинка не загрузится */
   background-color: #2a003f;
