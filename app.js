@@ -21,7 +21,7 @@ function renderHome() {
   app.innerHTML = `
     <h1>🎪 Цирк Никулина</h1>
     <div class="menu">
-      <button onclick="openSchedule()">📅 Расписание</button>
+      <button onclick="openSchedule('december_2025')">📅 Расписание</button>
       <button onclick="openArtists(0)">🤹 Артисты</button>
       <button onclick="openNews()">📰 Новости</button>
       <button onclick="openContacts()">📍 Контакты</button>
@@ -29,21 +29,33 @@ function renderHome() {
   `;
 }
 
-/* ---------- SCHEDULE ---------- */
-async function openSchedule() {
+/* ---------- SCHEDULE (ЕДИНСТВЕННАЯ ВЕРСИЯ) ---------- */
+async function openSchedule(month = "december_2025") {
   tg.MainButton.hide();
 
   const res = await fetch("/data/schedule.json");
   const data = await res.json();
+  const monthData = data[month];
+
+  if (!monthData) {
+    app.innerHTML = `<div class="card">Расписание не найдено</div>`;
+    return;
+  }
 
   app.innerHTML = `
     <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>📅 Расписание</h1>
+    <h1>📅 ${monthData.title}</h1>
+
+    <div class="menu">
+      <button onclick="openSchedule('december_2025')">Декабрь 2025</button>
+      <button onclick="openSchedule('january_2026')">Январь 2026</button>
+    </div>
+
     <div class="list">
-      ${data.map(item => `
+      ${monthData.shows.map(d => `
         <div class="card">
-          <strong>${item.title}</strong><br>
-          ${item.date} · ${item.time}
+          <strong>${d.day} · ${d.weekday}</strong><br>
+          ${d.times === "OFF" ? "Выходной" : d.times.join(" · ")}
         </div>
       `).join("")}
     </div>
@@ -69,8 +81,8 @@ async function openArtists(page = 0) {
     <div class="list">
       ${slice.map(a => `
         <div class="card">
-          <strong>${a.name}</strong><br>
-          ${a.genre}
+          <strong>${a.title}</strong><br>
+          ${a.lead}
         </div>
       `).join("")}
     </div>
@@ -82,36 +94,7 @@ async function openArtists(page = 0) {
   `;
 }
 
-async function openSchedule(month = "december_2025") {
-  const res = await fetch("/data/schedule.json");
-  const data = await res.json();
-  const monthData = data[month];
-
-  app.innerHTML = `
-    <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>📅 ${monthData.title}</h1>
-
-    <div class="menu">
-      <button onclick="openSchedule('december_2025')">Декабрь 2025</button>
-      <button onclick="openSchedule('january_2026')">Январь 2026</button>
-    </div>
-
-    <div class="list">
-      ${monthData.shows.map(d => `
-        <div class="card">
-          <strong>${d.day} · ${d.weekday}</strong><br>
-          ${
-            d.times === "OFF"
-              ? "Выходной"
-              : d.times.join(" · ")
-          }
-        </div>
-      `).join("")}
-    </div>
-  `;
-}
-
-/* ---------- NEWS (пока шаблон) ---------- */
+/* ---------- NEWS (ШАБЛОН) ---------- */
 function openNews() {
   tg.MainButton.hide();
   app.innerHTML = `
