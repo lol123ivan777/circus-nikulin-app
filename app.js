@@ -15,19 +15,11 @@ if (tg) {
 
 /* ---------- HELPERS ---------- */
 function showMainButton() {
-  if (tg) tg.MainButton.show();
+  tg?.MainButton.show();
 }
 
 function hideMainButton() {
-  if (tg) tg.MainButton.hide();
-}
-
-function openLink(url) {
-  if (tg) {
-    tg.openLink(url);
-  } else {
-    window.open(url, "_blank");
-  }
+  tg?.MainButton.hide();
 }
 
 /* ---------- HOME ---------- */
@@ -37,21 +29,49 @@ function renderHome() {
   app.innerHTML = `
     <h1>🎪 Цирк Никулина</h1>
 
-    <div class="menu">
+    <div class="cards-grid">
 
-      <div
-        class="card-image"
-        style="background-image: url('assets/cards/artistscard.png')"
-        onclick="openArtists()"
-      ></div>
+      <div class="image-card"
+        style="background-image:url('assets/cards/artistscard.png')"
+        onclick="openArtists()">
+      </div>
 
-      <button onclick="openSchedule('december_2025')">📅 Расписание</button>
-      <button onclick="openAbout()">🎪 О цирке</button>
-      <button onclick="openRoute()">🗺 Как добраться</button>
-      <button onclick="openRules()">📜 Правила посещения</button>
-      <button onclick="openContacts()">📍 Контакты</button>
+      <div class="image-card"
+        style="background-image:url('assets/cards/schedule.png')"
+        onclick="openSchedule('december_2025')">
+      </div>
+
+      <div class="image-card"
+        style="background-image:url('assets/cards/about.png')"
+        onclick="openAbout()">
+      </div>
+
+      <div class="image-card"
+        style="background-image:url('assets/cards/route.png')"
+        onclick="openRoute()">
+      </div>
+
+      <div class="image-card"
+        style="background-image:url('assets/cards/rules.png')"
+        onclick="openRules()">
+      </div>
+
+      <div class="image-card"
+        style="background-image:url('assets/cards/contacts.png')"
+        onclick="openContacts()">
+      </div>
 
     </div>
+  `;
+}
+
+/* ---------- ARTISTS ---------- */
+function openArtists() {
+  hideMainButton();
+  app.innerHTML = `
+    <div class="back" onclick="renderHome()">← Назад</div>
+    <h1>🤹 Артисты</h1>
+    <div class="card">Дальше будет мясо: жанры, карточки, фильтры</div>
   `;
 }
 
@@ -67,28 +87,18 @@ async function openSchedule(monthKey) {
     <div class="back" onclick="renderHome()">← Назад</div>
     <h1>📅 ${month.title}</h1>
 
-    <div class="menu">
-      <button onclick="openSchedule('december_2025')">Декабрь 2025</button>
-      <button onclick="openSchedule('january_2026')">Январь 2026</button>
-    </div>
-
     <div class="grid">
       ${month.days.map(day => `
         <div class="card">
           <div class="day-title">${day.day} · ${day.weekday}</div>
-
           ${
             day.slots === "OFF"
               ? `<div class="soldout">Выходной</div>`
-              : `
-                <div class="times">
-                  ${day.slots.map(slot =>
-                    slot.status === "available"
-                      ? `<button class="time-btn" onclick="openLink('${slot.url}')">${slot.time}</button>`
-                      : `<div class="soldout">${slot.time} · билетов нет</div>`
-                  ).join("")}
-                </div>
-              `
+              : day.slots.map(slot =>
+                  slot.status === "available"
+                    ? `<button class="time-btn" onclick="tg.openLink('${slot.url}')">${slot.time}</button>`
+                    : `<div class="soldout">${slot.time} · нет билетов</div>`
+                ).join("")
           }
         </div>
       `).join("")}
@@ -96,43 +106,9 @@ async function openSchedule(monthKey) {
   `;
 }
 
-/* ---------- ARTISTS ---------- */
-function openArtists() {
-  hideMainButton();
-
-  app.innerHTML = `
-    <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>🤹 Артисты</h1>
-    <div class="card">Жанры и список подключим следующим шагом</div>
-  `;
-}
-
-/* ---------- CONTACTS ---------- */
-async function openContacts() {
-  hideMainButton();
-
-  const res = await fetch("/data/contacts.json");
-  const c = await res.json();
-
-  app.innerHTML = `
-    <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>📍 Контакты</h1>
-
-    <div class="card">
-      📍 ${c.address}<br><br>
-      ☎ ${c.phone}<br>
-      🏢 Администрация: ${c.adminPhone}<br><br>
-      🌐 <a href="${c.vk}" target="_blank">VK</a><br>
-      ✈ <a href="${c.telegram}" target="_blank">Telegram</a><br><br>
-      ✉ ${c.email}
-    </div>
-  `;
-}
-
 /* ---------- ABOUT ---------- */
 async function openAbout() {
   hideMainButton();
-
   const res = await fetch("/data/about.json");
   const data = await res.json();
 
@@ -146,7 +122,6 @@ async function openAbout() {
 /* ---------- ROUTE ---------- */
 async function openRoute() {
   hideMainButton();
-
   const res = await fetch("/data/route.json");
   const data = await res.json();
 
@@ -160,7 +135,6 @@ async function openRoute() {
 /* ---------- RULES ---------- */
 async function openRules() {
   hideMainButton();
-
   const res = await fetch("/data/rules.json");
   const data = await res.json();
 
@@ -168,9 +142,26 @@ async function openRules() {
     <div class="back" onclick="renderHome()">← Назад</div>
     <h1>📜 ${data.title}</h1>
     <div class="card">
-      <ul>
-        ${data.items.map(i => `<li>${i}</li>`).join("")}
-      </ul>
+      <ul>${data.items.map(i => `<li>${i}</li>`).join("")}</ul>
+    </div>
+  `;
+}
+
+/* ---------- CONTACTS ---------- */
+async function openContacts() {
+  hideMainButton();
+  const res = await fetch("/data/contacts.json");
+  const c = await res.json();
+
+  app.innerHTML = `
+    <div class="back" onclick="renderHome()">← Назад</div>
+    <h1>📍 Контакты</h1>
+    <div class="card">
+      📍 ${c.address}<br><br>
+      ☎ ${c.phone}<br>
+      🏢 ${c.adminPhone}<br><br>
+      ✈ <a href="${c.telegram}" target="_blank">Telegram</a><br>
+      🌐 <a href="${c.vk}" target="_blank">VK</a>
     </div>
   `;
 }
