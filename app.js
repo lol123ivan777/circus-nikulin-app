@@ -42,7 +42,7 @@ function renderHome() {
       <!-- КАРТОЧКА АРТИСТЫ -->
       <div
         class="card-image"
-        style="background-image: url('/assets/cards/artistscard.png')"
+        style="background-image: url('assets/cards/artistscard.png')"
         onclick="openArtists()"
       ></div>
 
