@@ -38,12 +38,21 @@ function renderHome() {
     <h1>🎪 Цирк Никулина</h1>
 
     <div class="menu">
+
+      <!-- КАРТОЧКА АРТИСТЫ -->
+      <div
+        class="card-image"
+        style="background-image: url('/assets/cards/artistscard.png')"
+        onclick="openArtists()"
+      ></div>
+
+      <!-- ОСТАЛЬНЫЕ КНОПКИ КАК БЫЛИ -->
       <button onclick="openSchedule('december_2025')">📅 Расписание</button>
-      <button onclick="openArtists()">🤹 Артисты</button>
       <button onclick="openAbout()">🎪 О цирке</button>
       <button onclick="openRoute()">🗺 Как добраться</button>
       <button onclick="openRules()">📜 Правила посещения</button>
       <button onclick="openContacts()">📍 Контакты</button>
+
     </div>
   `;
 }
