@@ -115,12 +115,24 @@ function openAboutRoot() {
 }
 
 /* ---------- ARTISTS ---------- */
-function openArtists() {
+async function openArtists() {
   hideMainButton();
+
+  const res = await fetch("/data/artists.json");
+  const artists = await res.json();
+
   app.innerHTML = `
-    ${backButton("renderHome()")}
+    <div class="back" onclick="renderHome()">← Назад</div>
     <h1>🤹 Артисты</h1>
-    <div class="card">Скоро будет</div>
+
+    <div class="list">
+      ${artists.map(a => `
+        <div class="artist-card">
+          <div class="artist-title">${a.title}</div>
+          <div class="artist-lead">${a.lead}</div>
+        </div>
+      `).join("")}
+    </div>
   `;
 }
 
