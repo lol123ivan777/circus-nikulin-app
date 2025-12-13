@@ -204,8 +204,55 @@ async function openRules() {
 
 async function openContacts() {
   hideMainButton();
-  const d = await (await fetch("/data/contacts.json")).json();
-  app.innerHTML = `${backButton("goBack(renderHome)")}<h1>📍 ${d.title}</h1>${backBottom("goBack(renderHome)")}`;
+
+  const res = await fetch("/data/contacts.json");
+  const data = await res.json();
+
+  app.innerHTML = `
+    ${backButton("goBack(renderHome)")}
+    <h1>📍 ${data.title}</h1>
+
+    <div class="contacts-list">
+      ${data.sections.map(section => `
+        <div class="contact-block">
+          <div class="contact-title">${section.title}</div>
+          <div class="contact-text">
+            ${section.items.map(item => {
+              if (item.type === "text") {
+                return `<div>${item.value}</div>`;
+              }
+              if (item.type === "phone") {
+                return `
+                  <div>
+                    <span class="contact-label">${item.label}:</span>
+                    <a class="contact-link" href="tel:${item.value}">${item.value}</a>
+                  </div>
+                `;
+              }
+              if (item.type === "link") {
+                return `
+                  <div>
+                    <a class="contact-link" href="${item.url}" target="_blank">${item.label}</a>
+                  </div>
+                `;
+              }
+              if (item.type === "email") {
+                return `
+                  <div>
+                    <span class="contact-label">${item.label}:</span>
+                    <a class="contact-link" href="mailto:${item.value}">${item.value}</a>
+                  </div>
+                `;
+              }
+              return "";
+            }).join("")}
+          </div>
+        </div>
+      `).join("")}
+    </div>
+
+    ${backBottom("goBack(renderHome)")}
+  `;
 }
 
 /* ---------- INIT ---------- */
