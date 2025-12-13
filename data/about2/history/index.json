@@ -2,29 +2,29 @@
   "title": "История",
   "sections": [
     {
-      "id": "pre1917",
+      "id": "empire",
       "title": "До 1917 года",
-      "file": "pre1917.json"
+      "file": "empire.json"
     },
     {
-      "id": "1917_1941",
+      "id": "1917",
       "title": "1917–1941",
-      "file": "1917_1941.json"
+      "file": "1917.json"
     },
     {
-      "id": "war",
+      "id": "ww2",
       "title": "1941–1945",
-      "file": "war.json"
+      "file": "ww2.json"
     },
     {
-      "id": "soviet",
+      "id": "cccp",
       "title": "Вторая половина XX века",
-      "file": "soviet.json"
+      "file": "cccp.json"
     },
     {
-      "id": "modern",
+      "id": "new",
       "title": "Современность",
-      "file": "modern.json"
+      "file": "new.json"
     }
   ]
 }
