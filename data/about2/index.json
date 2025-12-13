@@ -1,0 +1,15 @@
+{
+  "title": "О цирке",
+  "sections": [
+    {
+      "id": "history",
+      "title": "История",
+      "file": "history/index.json"
+    },
+    {
+      "id": "directors",
+      "title": "Художественные руководители",
+      "file": "directors/index.json"
+    }
+  ]
+}
