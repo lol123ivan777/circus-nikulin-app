@@ -22,7 +22,8 @@ function hideMainButton() {
   tg?.MainButton.hide();
 }
 
-/* ---------- HOME ---------- */
+/* ---------- HOME -------------*/
+
 function renderHome() {
   showMainButton();
 
@@ -37,27 +38,27 @@ function renderHome() {
       </div>
 
       <div class="image-card"
-        style="background-image:url('assets/cards/schedule.png')"
+        style="background-image:url('assets/cards/schedulecard.png')"
         onclick="openSchedule('december_2025')">
       </div>
 
       <div class="image-card"
-        style="background-image:url('assets/cards/about.png')"
+        style="background-image:url('assets/cards/aboutcard.png')"
         onclick="openAbout()">
       </div>
 
       <div class="image-card"
-        style="background-image:url('assets/cards/route.png')"
+        style="background-image:url('assets/cards/routecard.png')"
         onclick="openRoute()">
       </div>
 
       <div class="image-card"
-        style="background-image:url('assets/cards/rules.png')"
+        style="background-image:url('assets/cards/rulescard.png')"
         onclick="openRules()">
       </div>
 
       <div class="image-card"
-        style="background-image:url('assets/cards/contacts.png')"
+        style="background-image:url('assets/cards/contactscard.png')"
         onclick="openContacts()">
       </div>
 
