@@ -1,0 +1,30 @@
+{
+  "title": "История",
+  "sections": [
+    {
+      "id": "pre1917",
+      "title": "До 1917 года",
+      "file": "pre1917.json"
+    },
+    {
+      "id": "1917_1941",
+      "title": "1917–1941",
+      "file": "1917_1941.json"
+    },
+    {
+      "id": "war",
+      "title": "1941–1945",
+      "file": "war.json"
+    },
+    {
+      "id": "soviet",
+      "title": "Вторая половина XX века",
+      "file": "soviet.json"
+    },
+    {
+      "id": "modern",
+      "title": "Современность",
+      "file": "modern.json"
+    }
+  ]
+}
