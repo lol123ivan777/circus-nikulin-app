@@ -2,7 +2,7 @@
   box-sizing: border-box;
 }
 
-/* ---------- BODY + BACKGROUND ---------- */
+/* ---------- BODY ---------- */
 body {
   margin: 0;
   min-height: 100vh;
@@ -10,220 +10,103 @@ body {
   color: #f5d98b;
 
   background:
-    linear-gradient(
-      rgba(70, 10, 10, 0.75),
-      rgba(20, 0, 0, 0.9)
-    ),
-    url("assets/ffc4f6c27a2acafe6d4c7a9891b88650.jpg")
-      center / cover no-repeat;
+    linear-gradient(rgba(70,10,10,.8), rgba(20,0,0,.9)),
+    url("assets/ffc4f6c27a2acafe6d4c7a9891b88650.jpg") center/cover no-repeat;
 
   background-color: #2b0505;
 }
 
-/* ---------- APP CONTAINER ---------- */
+/* ---------- APP ---------- */
 #app {
   padding: 16px;
 }
 
-/* ---------- TITLES ---------- */
+/* ---------- TITLE ---------- */
 h1 {
-  margin: 0 0 22px;
+  margin-bottom: 20px;
   font-size: 26px;
-  font-weight: 700;
-
   color: #f2c94c;
-
-  text-shadow:
-    0 0 10px rgba(242, 201, 76, 0.4),
-    0 0 20px rgba(180, 140, 40, 0.25);
+  text-shadow: 0 0 12px rgba(242,201,76,.4);
 }
 
-/* ---------- MENU ---------- */
-.menu {
-  display: flex;
-  flex-direction: column;
+/* ---------- GRID OF CARDS ---------- */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
-  margin-bottom: 24px;
 }
 
-/* ---------- BUTTONS (ЦИРКОВОЙ СТИЛЬ) ---------- */
-.menu button,
-.time-btn {
+/* ---------- IMAGE CARD ---------- */
+.image-card {
+  position: relative;
   width: 100%;
-  padding: 22px;
+  aspect-ratio: 1 / 1;
   border-radius: 22px;
-
-  background: rgba(120, 20, 20, 0.65);
-
-  border: 1px solid rgba(200, 120, 40, 0.45);
-
-  color: #f5d98b;
-  font-size: 17px;
-  font-weight: 600;
-  letter-spacing: 0.4px;
-
-  text-shadow:
-    0 0 6px rgba(245, 217, 139, 0.6);
+  background-size: cover;
+  background-position: center;
+  cursor: pointer;
 
   box-shadow:
-    0 8px 18px rgba(0, 0, 0, 0.45),
-    inset 0 0 12px rgba(255, 200, 80, 0.12);
+    0 0 18px rgba(180,90,40,.45),
+    inset 0 0 30px rgba(0,0,0,.35);
 
-  transition:
-    transform 0.15s ease,
-    box-shadow 0.2s ease,
-    background 0.2s ease;
+  transition: transform .2s ease, box-shadow .2s ease;
 }
 
-/* ---------- НАЖАТИЕ ---------- */
-.menu button:active,
-.time-btn:active {
-  transform: scale(0.96);
+.image-card::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 22px;
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.55),
+    rgba(0,0,0,.1)
+  );
+}
 
-  background: rgba(160, 30, 30, 0.8);
-
-  box-shadow:
-    0 0 18px rgba(242, 201, 76, 0.75),
-    inset 0 0 14px rgba(255, 220, 120, 0.25);
+.image-card:active {
+  transform: scale(.96);
+  box-shadow: 0 0 28px rgba(242,201,76,.7);
 }
 
 /* ---------- BACK ---------- */
 .back {
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   cursor: pointer;
-  font-size: 15px;
-
   color: #e6c76a;
-  opacity: 0.85;
 }
 
-/* ---------- GRID (РАСПИСАНИЕ) ---------- */
+/* ---------- GENERIC CARD ---------- */
+.card {
+  background: rgba(60,10,10,.75);
+  border-radius: 18px;
+  padding: 16px;
+  border: 1px solid rgba(200,120,40,.35);
+}
+
+/* ---------- SCHEDULE ---------- */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-}
-
-/* ---------- CARDS ---------- */
-.card {
-  background: rgba(60, 10, 10, 0.75);
-  backdrop-filter: blur(6px);
-
-  border-radius: 18px;
-  padding: 14px;
-
-  border: 1px solid rgba(200, 120, 40, 0.35);
-
-  box-shadow:
-    0 0 14px rgba(0, 0, 0, 0.45);
+  gap: 12px;
 }
 
 .day-title {
   font-weight: 700;
   margin-bottom: 8px;
-  color: #f2c94c;
 }
 
-/* ---------- TIMES ---------- */
-.times {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+.time-btn {
+  margin-top: 6px;
+  padding: 10px;
+  border-radius: 14px;
+  border: none;
+  background: rgba(120,20,20,.7);
+  color: #f5d98b;
 }
 
-/* ---------- SOLD OUT ---------- */
 .soldout {
   font-size: 13px;
   color: #d27c7c;
-  opacity: 0.95;
-}
-
-/* ---------- LISTS ---------- */
-.card ul {
-  padding-left: 18px;
-  margin: 0;
-}
-
-.card li {
-  margin-bottom: 8px;
-  line-height: 1.4;
-  color: #f3d78a;
-}
-
-/* ---------- THEATRE CURTAIN ---------- */
-#curtain {
-  position: fixed;
-  inset: 0;
-  z-index: 9999;
-
-  /* цвет занавеса */
-  background:
-    radial-gradient(
-      circle at 50% 120%,
-      rgba(255, 200, 120, 0.15),
-      rgba(0, 0, 0, 0) 40%
-    ),
-    linear-gradient(
-      to top,
-      #3b0000,
-      #5c0a0a,
-      #7a1a1a
-    );
-
-  box-shadow:
-    inset 0 20px 40px rgba(255, 180, 80, 0.15),
-    inset 0 -40px 80px rgba(0, 0, 0, 0.6);
-
-  animation: curtainUp 1.9s ease-in-out forwards;
-  animation-delay: 0.3s;
-}
-
-/* ---------- CURTAIN ANIMATION ---------- */
-@keyframes curtainUp {
-  0% {
-    transform: translateY(0);
-  }
-  100% {
-    transform: translateY(-110%);
-  }
-}
-
-/* ---------- IMAGE CARD (ARTISTS) ---------- */
-.card-image {
-  position: relative;
-  width: 100%;
-  height: 220px;
-  border-radius: 22px;
-  overflow: hidden;
-  cursor: pointer;
-
-  background-size: cover;
-  background-position: center;
-
-  box-shadow:
-    0 0 18px rgba(180, 90, 40, 0.45),
-    0 0 36px rgba(120, 50, 20, 0.35);
-
-  transition:
-    transform 0.25s ease,
-    box-shadow 0.25s ease;
-}
-
-.card-image:active {
-  transform: scale(0.97);
-  box-shadow:
-    0 0 28px rgba(220, 150, 80, 0.7),
-    0 0 50px rgba(160, 80, 40, 0.6);
-}
-
-/* лёгкое затемнение, чтобы картинка читалась */
-.card-image::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(
-    to top,
-    rgba(0, 0, 0, 0.45),
-    rgba(0, 0, 0, 0.15)
-  );
 }
