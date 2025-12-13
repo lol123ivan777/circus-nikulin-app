@@ -198,19 +198,42 @@ async function openRules() {
 /* ---------- CONTACTS ---------- */
 async function openContacts() {
   hideMainButton();
+
   const res = await fetch("/data/contacts.json");
-  const c = await res.json();
+  const data = await res.json();
 
   app.innerHTML = `
-    ${backButton("renderHome()")}
-    <h1>Контакты</h1>
-    <div class="card">
-      📍 ${c.address}<br><br>
-      ☎ ${c.phone}<br>
-      🏢 ${c.adminPhone}<br><br>
-      <a href="${c.telegram}" target="_blank">Telegram</a><br>
-      <a href="${c.vk}" target="_blank">VK</a>
-    </div>
+    <div class="back" onclick="renderHome()">← Назад</div>
+    <h1>📍 ${data.title}</h1>
+
+    ${data.sections.map(section => `
+      <div class="card contact-section">
+        <div class="contact-title">${section.title}</div>
+
+        <div class="contact-items">
+          ${section.items.map(item => {
+            if (item.type === "phone")
+              return `<a class="contact-link" href="tel:${item.value}">
+                ${item.label ? `<span>${item.label}:</span>` : ""} ${item.value}
+              </a>`;
+
+            if (item.type === "email")
+              return `<a class="contact-link" href="mailto:${item.value}">
+                ${item.label ? `<span>${item.label}:</span>` : ""} ${item.value}
+              </a>`;
+
+            if (item.type === "link")
+              return `<a class="contact-link" href="${item.value}" target="_blank">
+                ${item.label}
+              </a>`;
+
+            return `<div class="contact-text">${item.value}</div>`;
+          }).join("")}
+        </div>
+      </div>
+    `).join("")}
+
+    <div class="back back-bottom" onclick="renderHome()">← Назад</div>
   `;
 }
 
