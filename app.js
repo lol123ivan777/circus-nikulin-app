@@ -30,7 +30,8 @@ function openLink(url) {
   }
 }
 
-/* ---------- HOME ---------- */
+/* ---------- HOME ---------- 
+
 function renderHome() {
   showMainButton();
 
@@ -39,14 +40,12 @@ function renderHome() {
 
     <div class="menu">
 
-      <!-- КАРТОЧКА АРТИСТЫ -->
       <div
         class="card-image"
         style="background-image: url('assets/cards/artistscard.png')"
         onclick="openArtists()"
       ></div>
 
-      <!-- ОСТАЛЬНЫЕ КНОПКИ КАК БЫЛИ -->
       <button onclick="openSchedule('december_2025')">📅 Расписание</button>
       <button onclick="openAbout()">🎪 О цирке</button>
       <button onclick="openRoute()">🗺 Как добраться</button>
