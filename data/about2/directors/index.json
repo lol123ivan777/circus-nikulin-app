@@ -1,1 +1,10 @@
-.
+{
+  "title": "Художественные руководители",
+  "sections": [
+    {
+      "id": "nikulin",
+      "title": "Юрий Никулин",
+      "file": "xudruki.json"
+    }
+  ]
+}.
