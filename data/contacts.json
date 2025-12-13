@@ -4,108 +4,37 @@
     {
       "title": "Адрес",
       "items": [
-        {
-          "type": "text",
-          "value": "127051, Россия, Москва, Цветной бульвар, 13"
-        }
+        { "type": "text", "value": "127051, Россия, Москва, Цветной бульвар, 13" }
       ]
     },
     {
       "title": "Телефон",
       "items": [
-        {
-          "type": "phone",
-          "label": "Касса",
-          "value": "+74956288349"
-        },
-        {
-          "type": "phone",
-          "label": "Администрация",
-          "value": "+74957803135"
-        }
+        { "type": "phone", "label": "Касса", "value": "+74956288349" },
+        { "type": "phone", "label": "Администрация", "value": "+74957803135" }
       ]
     },
     {
       "title": "Социальные сети",
       "items": [
-        {
-          "type": "link",
-          "label": "VK",
-          "value": "https://vk.com/circusnikulin"
-        },
-        {
-          "type": "link",
-          "label": "Telegram",
-          "value": "https://t.me/nikulin_circus"
-        }
-      ]
-    },
-    {
-      "title": "Отдел забытых вещей",
-      "items": [
-        {
-          "type": "text",
-          "value": "Забытые вещи можно забрать во время работы гардероба в дни представлений"
-        }
-      ]
-    },
-    {
-      "title": "Электронные билеты",
-      "items": [
-        {
-          "type": "link",
-          "label": "Официальный сайт",
-          "value": "https://circusnikulin.ru"
-        },
-        {
-          "type": "phone",
-          "label": "Техподдержка",
-          "value": "+74952150000"
-        },
-        {
-          "type": "email",
-          "value": "ticket@profticket.ru"
-        }
+        { "type": "link", "label": "VK", "url": "https://vk.com/circusnikulin" },
+        { "type": "link", "label": "Telegram", "url": "https://t.me/nikulin_circus" }
       ]
     },
     {
       "title": "Официальные партнёры",
       "items": [
-        {
-          "type": "link",
-          "label": "Яндекс.Афиша",
-          "value": "https://afisha.yandex.ru"
-        },
-        {
-          "type": "link",
-          "label": "Afisha.ru",
-          "value": "https://www.afisha.ru"
-        },
-        {
-          "type": "link",
-          "label": "Kassir.ru",
-          "value": "https://kassir.ru"
-        }
+        { "type": "link", "label": "Яндекс.Афиша", "url": "https://afisha.yandex.ru" },
+        { "type": "link", "label": "Afisha.ru", "url": "https://www.afisha.ru" },
+        { "type": "link", "label": "Kassir.ru", "url": "https://kassir.ru" }
       ]
     },
     {
       "title": "Электронная почта",
       "items": [
-        {
-          "type": "email",
-          "label": "Целевые мероприятия",
-          "value": "lsamoilova@circusnikulin.ru"
-        },
-        {
-          "type": "email",
-          "label": "Общая информация",
-          "value": "info@circusnikulin.ru"
-        },
-        {
-          "type": "email",
-          "label": "Для СМИ",
-          "value": "pr@circusnikulin.ru"
-        }
+        { "type": "email", "label": "Целевые мероприятия", "value": "lsamoilova@circusnikulin.ru" },
+        { "type": "email", "label": "Общая информация", "value": "info@circusnikulin.ru" },
+        { "type": "email", "label": "Для СМИ", "value": "pr@circusnikulin.ru" }
       ]
     }
   ]
