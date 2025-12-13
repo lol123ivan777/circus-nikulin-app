@@ -30,8 +30,7 @@ function openLink(url) {
   }
 }
 
-/* ---------- HOME ---------- 
-
+/* ---------- HOME ---------- */
 function renderHome() {
   showMainButton();
 
