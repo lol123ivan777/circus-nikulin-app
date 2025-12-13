@@ -31,15 +31,38 @@ function renderHome() {
   showMainButton();
 
   app.innerHTML = `
-    <h1>🎪 Цирк Никулина</h1>
-
     <div class="cards-grid">
-      <div class="image-card" onclick="openArtists()">Артисты</div>
-      <div class="image-card" onclick="openSchedule('december_2025')">Расписание</div>
-      <div class="image-card" onclick="openAboutRoot()">О цирке</div>
-      <div class="image-card" onclick="openRoute()">Как добраться</div>
-      <div class="image-card" onclick="openRules()">Правила</div>
-      <div class="image-card" onclick="openContacts()">Контакты</div>
+
+      <div class="image-card"
+        style="background-image:url('assets/cards/artistscard.png')"
+        onclick="openArtists()">
+      </div>
+
+      <div class="image-card"
+        style="background-image:url('assets/cards/schedulecard.png')"
+        onclick="openSchedule('december_2025')">
+      </div>
+
+      <div class="image-card"
+        style="background-image:url('assets/cards/aboutcard.png')"
+        onclick="openAboutRoot()">
+      </div>
+
+      <div class="image-card"
+        style="background-image:url('assets/cards/routecard.png')"
+        onclick="openRoute()">
+      </div>
+
+      <div class="image-card"
+        style="background-image:url('assets/cards/rulescard.png')"
+        onclick="openRules()">
+      </div>
+
+      <div class="image-card"
+        style="background-image:url('assets/cards/contactscard.png')"
+        onclick="openContacts()">
+      </div>
+
     </div>
   `;
 }
