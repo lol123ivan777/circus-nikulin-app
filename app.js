@@ -196,9 +196,9 @@ async function openRules() {
 }
 
 /* ---------- CONTACTS ---------- */
+
 async function openContacts() {
   hideMainButton();
-
   const res = await fetch("/data/contacts.json");
   const data = await res.json();
 
@@ -206,32 +206,31 @@ async function openContacts() {
     <div class="back" onclick="renderHome()">← Назад</div>
     <h1>📍 ${data.title}</h1>
 
-    ${data.sections.map(section => `
-      <div class="card contact-section">
-        <div class="contact-title">${section.title}</div>
-
-        <div class="contact-items">
-          ${section.items.map(item => {
-            if (item.type === "phone")
-              return `<a class="contact-link" href="tel:${item.value}">
-                ${item.label ? `<span>${item.label}:</span>` : ""} ${item.value}
-              </a>`;
-
-            if (item.type === "email")
-              return `<a class="contact-link" href="mailto:${item.value}">
-                ${item.label ? `<span>${item.label}:</span>` : ""} ${item.value}
-              </a>`;
-
-            if (item.type === "link")
-              return `<a class="contact-link" href="${item.value}" target="_blank">
-                ${item.label}
-              </a>`;
-
-            return `<div class="contact-text">${item.value}</div>`;
-          }).join("")}
+    <div class="contacts-list">
+      ${data.sections.map(section => `
+        <div class="contact-block">
+          <div class="contact-title">${section.title}</div>
+          <div class="contact-text">
+            ${section.items.map(item => {
+              if (item.type === "text") {
+                return `<div>${item.value}</div>`;
+              }
+              if (item.type === "phone") {
+                return `<div><span class="contact-label">${item.label}:</span>
+                  <a class="contact-link" href="tel:${item.value}">${item.value}</a></div>`;
+              }
+              if (item.type === "link") {
+                return `<div><a class="contact-link" href="${item.url}" target="_blank">${item.label}</a></div>`;
+              }
+              if (item.type === "email") {
+                return `<div><span class="contact-label">${item.label}:</span>
+                  <a class="contact-link" href="mailto:${item.value}">${item.value}</a></div>`;
+              }
+            }).join("")}
+          </div>
         </div>
-      </div>
-    `).join("")}
+      `).join("")}
+    </div>
 
     <div class="back back-bottom" onclick="renderHome()">← Назад</div>
   `;
