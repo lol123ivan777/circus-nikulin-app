@@ -272,29 +272,39 @@ h1 {
 }
 
 /* ---------- CURTAIN ANIMATIONS ---------- */
-.curtain-up {
-  animation: curtainUp 1.9s ease-in-out forwards;
-}
 
-.curtain-left {
-  animation: curtainLeft 1.9s ease-in-out forwards;
-}
+.curtain-up-close { animation: curtainUpClose .95s ease-in forwards; }
+.curtain-up-open { animation: curtainUpOpen .95s ease-out forwards; }
 
-.curtain-right {
-  animation: curtainRight 1.9s ease-in-out forwards;
-}
+.curtain-left-close { animation: curtainLeftClose .95s ease-in forwards; }
+.curtain-left-open { animation: curtainLeftOpen .95s ease-out forwards; }
 
-@keyframes curtainUp {
+.curtain-right-close { animation: curtainRightClose .95s ease-in forwards; }
+.curtain-right-open { animation: curtainRightOpen .95s ease-out forwards; }
+
+@keyframes curtainUpClose {
   from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+@keyframes curtainUpOpen {
+  from { transform: translateY(0); }
   to { transform: translateY(-110%); }
 }
 
-@keyframes curtainLeft {
+@keyframes curtainLeftClose {
   from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+@keyframes curtainLeftOpen {
+  from { transform: translateX(0); }
   to { transform: translateX(-110%); }
 }
 
-@keyframes curtainRight {
+@keyframes curtainRightClose {
   from { transform: translateX(-100%); }
+  to { transform: translateX(0); }
+}
+@keyframes curtainRightOpen {
+  from { transform: translateX(0); }
   to { transform: translateX(110%); }
 }
