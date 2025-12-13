@@ -135,3 +135,50 @@ h1 {
   font-size: 14px;
   opacity: 0.85;
 }
+
+/* ---------- CONTACTS ---------- */
+
+.contact-section {
+  margin-bottom: 16px;
+}
+
+.contact-title {
+  font-size: 17px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: #f2c94c;
+}
+
+.contact-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.contact-link {
+  color: #f5d98b;
+  text-decoration: none;
+  font-size: 15px;
+}
+
+.contact-link span {
+  opacity: 0.7;
+  margin-right: 6px;
+}
+
+.contact-link:active {
+  opacity: 0.7;
+}
+
+.contact-text {
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+/* ---------- BACK BOTTOM ---------- */
+.back-bottom {
+  margin-top: 24px;
+  text-align: center;
+  font-size: 16px;
+  font-weight: 600;
+}
