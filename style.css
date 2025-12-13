@@ -186,6 +186,7 @@ h1 {
   100% {
     transform: translateY(-110%);
   }
+}
 
 /* ---------- IMAGE CARD (ARTISTS) ---------- */
 .card-image {
