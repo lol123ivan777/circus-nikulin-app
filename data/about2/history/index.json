@@ -1,30 +1,30 @@
 {
-  "title": "История",
+  "title": "История цирка",
   "sections": [
     {
       "id": "empire",
       "title": "До 1917 года",
-      "file": "empire.json"
+      "path": "data/about2/history/empire.json"
     },
     {
-      "id": "1917",
+      "id": "revolution",
       "title": "1917–1941",
-      "file": "1917.json"
+      "path": "data/about2/history/1917.json"
     },
     {
       "id": "ww2",
-      "title": "1941–1945",
-      "file": "ww2.json"
+      "title": "Великая Отечественная война",
+      "path": "data/about2/history/ww2.json"
     },
     {
-      "id": "cccp",
-      "title": "Вторая половина XX века",
-      "file": "cccp.json"
+      "id": "ussr",
+      "title": "Советский период",
+      "path": "data/about2/history/cccp.json"
     },
     {
-      "id": "new",
+      "id": "modern",
       "title": "Современность",
-      "file": "new.json"
+      "path": "data/about2/history/new.json"
     }
   ]
 }
