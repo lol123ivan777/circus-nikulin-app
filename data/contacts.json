@@ -1,42 +1,112 @@
 {
   "title": "Контакты",
-  "content": "
-  <strong>Адрес:</strong><br>
-  127051, Россия, Москва, Цветной бульвар 13<br><br>
-
-  <strong>Телефон:</strong><br>
-  <a href=\"tel:+74956288349\">+7 (495) 628-83-49</a><br>
-  Администрация: <a href=\"tel:+74957803135\">+7 (495) 780 31 35</a><br><br>
-
-  <strong>Соцсети:</strong><br>
-  <a href=\"https://vk.com/circusnikulin\">Группа в VK</a><br>
-  <a href=\"https://t.me/nikulin_circus\">Группа в Telegram</a><br><br>
-
-  <strong>Отдел забытых вещей:</strong><br>
-  Забытые вещи вы можете забрать во время работы гардероба в дни представлений<br><br>
-
-  <strong>По вопросам рекламы:</strong><br>
-  <a href=\"tel:+74956259319\">+7 (495) 625-93-19</a><br><br>
-
-  <strong>Электронные билеты:</strong><br>
-  Купить билеты на нашем сайте —
-  <a href=\"https://circusnikulin.ru\">circusnikulin.ru</a><br>
-  Техническое сопровождение —
-  «Театрально-концертное агентство Дилявер»<br>
-  Телефон: <a href=\"tel:+74952150000\">8 (495) 215-0000</a><br>
-  Почта: <a href=\"mailto:ticket@profticket.ru\">ticket@profticket.ru</a><br><br>
-
-  Купить билеты у официальных партнёров:<br>
-  <a href=\"https://afisha.yandex.ru\">Яндекс.Афиша</a><br>
-  <a href=\"https://www.afisha.ru\">Afisha.ru</a><br>
-  <a href=\"https://kassir.ru\">Kassir.ru</a><br><br>
-
-  <strong>Электронная почта:</strong><br>
-  Целевые мероприятия:
-  <a href=\"mailto:lsamoilova@circusnikulin.ru\">lsamoilova@circusnikulin.ru</a><br>
-  Общая информация:
-  <a href=\"mailto:info@circusnikulin.ru\">info@circusnikulin.ru</a><br>
-  Для СМИ:
-  <a href=\"mailto:pr@circusnikulin.ru\">pr@circusnikulin.ru</a>
-  "
+  "sections": [
+    {
+      "title": "Адрес",
+      "items": [
+        {
+          "type": "text",
+          "value": "127051, Россия, Москва, Цветной бульвар, 13"
+        }
+      ]
+    },
+    {
+      "title": "Телефон",
+      "items": [
+        {
+          "type": "phone",
+          "label": "Касса",
+          "value": "+74956288349"
+        },
+        {
+          "type": "phone",
+          "label": "Администрация",
+          "value": "+74957803135"
+        }
+      ]
+    },
+    {
+      "title": "Социальные сети",
+      "items": [
+        {
+          "type": "link",
+          "label": "VK",
+          "value": "https://vk.com/circusnikulin"
+        },
+        {
+          "type": "link",
+          "label": "Telegram",
+          "value": "https://t.me/nikulin_circus"
+        }
+      ]
+    },
+    {
+      "title": "Отдел забытых вещей",
+      "items": [
+        {
+          "type": "text",
+          "value": "Забытые вещи можно забрать во время работы гардероба в дни представлений"
+        }
+      ]
+    },
+    {
+      "title": "Электронные билеты",
+      "items": [
+        {
+          "type": "link",
+          "label": "Официальный сайт",
+          "value": "https://circusnikulin.ru"
+        },
+        {
+          "type": "phone",
+          "label": "Техподдержка",
+          "value": "+74952150000"
+        },
+        {
+          "type": "email",
+          "value": "ticket@profticket.ru"
+        }
+      ]
+    },
+    {
+      "title": "Официальные партнёры",
+      "items": [
+        {
+          "type": "link",
+          "label": "Яндекс.Афиша",
+          "value": "https://afisha.yandex.ru"
+        },
+        {
+          "type": "link",
+          "label": "Afisha.ru",
+          "value": "https://www.afisha.ru"
+        },
+        {
+          "type": "link",
+          "label": "Kassir.ru",
+          "value": "https://kassir.ru"
+        }
+      ]
+    },
+    {
+      "title": "Электронная почта",
+      "items": [
+        {
+          "type": "email",
+          "label": "Целевые мероприятия",
+          "value": "lsamoilova@circusnikulin.ru"
+        },
+        {
+          "type": "email",
+          "label": "Общая информация",
+          "value": "info@circusnikulin.ru"
+        },
+        {
+          "type": "email",
+          "label": "Для СМИ",
+          "value": "pr@circusnikulin.ru"
+        }
+      ]
+    }
+  ]
 }
