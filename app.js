@@ -1,5 +1,6 @@
 const app = document.getElementById("app");
 const tg = window.Telegram?.WebApp;
+const curtain = document.getElementById("curtain");
 
 let scheduleData = null;
 
@@ -13,6 +14,22 @@ if (tg) {
     tg.openLink("https://circusnikulin.ru/tickets");
   });
   tg.MainButton.show();
+}
+
+/* ---------- CURTAIN CONTROL ---------- */
+function playCurtain(type, callback) {
+  curtain.className = "";
+  curtain.style.pointerEvents = "auto";
+
+  requestAnimationFrame(() => {
+    curtain.classList.add(type);
+  });
+
+  setTimeout(() => {
+    curtain.className = "";
+    curtain.style.pointerEvents = "none";
+    callback && callback();
+  }, 1900);
 }
 
 /* ---------- HELPERS ---------- */
@@ -41,36 +58,50 @@ function renderHome() {
 
       <div class="image-card"
         style="background-image:url('assets/cards/artistscard.png')"
-        onclick="openArtists()">
+        onclick="goLeft(openArtists)">
       </div>
 
       <div class="image-card"
         style="background-image:url('assets/cards/schedulecard.png')"
-        onclick="openScheduleRoot()">
+        onclick="goLeft(openScheduleRoot)">
       </div>
 
       <div class="image-card"
         style="background-image:url('assets/cards/aboutcard.png')"
-        onclick="openAboutRoot()">
+        onclick="goLeft(openAboutRoot)">
       </div>
 
       <div class="image-card"
         style="background-image:url('assets/cards/routecard.png')"
-        onclick="openRoute()">
+        onclick="goLeft(openRoute)">
       </div>
 
       <div class="image-card"
         style="background-image:url('assets/cards/rulescard.png')"
-        onclick="openRules()">
+        onclick="goLeft(openRules)">
       </div>
 
       <div class="image-card"
         style="background-image:url('assets/cards/contactscard.png')"
-        onclick="openContacts()">
+        onclick="goLeft(openContacts)">
       </div>
 
     </div>
   `;
+}
+
+/* ---------- NAV HELPERS ---------- */
+function goLeft(fn) {
+  playCurtain("curtain-left", fn);
+}
+
+function goRight(fn) {
+  playCurtain("curtain-right", fn);
+}
+
+/* ---------- ABOUT ---------- */
+function openAboutRoot() {
+  openIndex("data/about2/index.json", "goRight(renderHome)");
 }
 
 /* ---------- GENERIC JSON NAV ---------- */
@@ -87,7 +118,7 @@ async function openIndex(path, backAction) {
     <div class="list">
       ${data.sections.map(s => `
         <div class="card clickable"
-          onclick="openIndexOrPage('${s.path}', '${path}')">
+          onclick="goLeft(() => openIndexOrPage('${s.path}', '${path}'))">
           ${s.title}
         </div>
       `).join("")}
@@ -102,23 +133,18 @@ async function openIndexOrPage(path, parentPath) {
   const data = await res.json();
 
   if (data.sections) {
-    openIndex(path, `openIndex('${parentPath}', 'renderHome()')`);
+    openIndex(path, `goRight(() => openIndex('${parentPath}', 'goRight(renderHome)'))`);
     return;
   }
 
   app.innerHTML = `
-    ${backButton(`openIndex('${parentPath}', 'renderHome()')`)}
+    ${backButton(`goRight(() => openIndex('${parentPath}', 'goRight(renderHome)'))`)}
     <h1>${data.title}</h1>
     <div class="card text">
       ${data.text.replace(/\n/g, "<br><br>")}
     </div>
-    ${backBottom(`openIndex('${parentPath}', 'renderHome()')`)}
+    ${backBottom(`goRight(() => openIndex('${parentPath}', 'goRight(renderHome)'))`)}
   `;
-}
-
-/* ---------- ABOUT ---------- */
-function openAboutRoot() {
-  openIndex("data/about2/index.json", "renderHome()");
 }
 
 /* ---------- ARTISTS ---------- */
@@ -129,7 +155,7 @@ async function openArtists() {
   const artists = await res.json();
 
   app.innerHTML = `
-    ${backButton("renderHome()")}
+    ${backButton("goRight(renderHome)")}
     <h1>🤹 Артисты</h1>
 
     <div class="list">
@@ -141,7 +167,7 @@ async function openArtists() {
       `).join("")}
     </div>
 
-    ${backBottom("renderHome()")}
+    ${backBottom("goRight(renderHome)")}
   `;
 }
 
@@ -155,19 +181,19 @@ async function openScheduleRoot() {
   }
 
   app.innerHTML = `
-    ${backButton("renderHome()")}
+    ${backButton("goRight(renderHome)")}
     <h1>📅 Расписание</h1>
 
     <div class="list">
       ${Object.entries(scheduleData).map(([key, month]) => `
         <div class="card clickable"
-          onclick="openScheduleMonth('${key}')">
+          onclick="goLeft(() => openScheduleMonth('${key}'))">
           ${month.title}
         </div>
       `).join("")}
     </div>
 
-    ${backBottom("renderHome()")}
+    ${backBottom("goRight(renderHome)")}
   `;
 }
 
@@ -176,39 +202,27 @@ function openScheduleMonth(monthKey) {
   const month = scheduleData[monthKey];
 
   app.innerHTML = `
-    ${backButton("openScheduleRoot()")}
+    ${backButton("goRight(openScheduleRoot)")}
     <h1>${month.title}</h1>
 
     <div class="grid">
-      ${month.days.map(day => {
-        if (day.slots === "OFF") {
-          return `
-            <div class="card">
-              <div class="day-title">${day.day} · ${day.weekday}</div>
-              <div class="soldout">Выходной</div>
-            </div>
-          `;
-        }
-
-        return `
-          <div class="card">
-            <div class="day-title">${day.day} · ${day.weekday}</div>
-            ${day.slots.map(slot => {
-              if (slot.status === "soldout") {
-                return `<div class="soldout">${slot.time} · нет билетов</div>`;
-              }
-              return `
-                <a href="${slot.url}" target="_blank">
-                  <button class="time-btn">${slot.time}</button>
-                </a>
-              `;
-            }).join("")}
-          </div>
-        `;
-      }).join("")}
+      ${month.days.map(day => `
+        <div class="card">
+          <div class="day-title">${day.day} · ${day.weekday}</div>
+          ${
+            day.slots === "OFF"
+              ? `<div class="soldout">Выходной</div>`
+              : day.slots.map(slot =>
+                  slot.status === "soldout"
+                    ? `<div class="soldout">${slot.time} · нет билетов</div>`
+                    : `<a href="${slot.url}" target="_blank"><button class="time-btn">${slot.time}</button></a>`
+                ).join("")
+          }
+        </div>
+      `).join("")}
     </div>
 
-    ${backBottom("openScheduleRoot()")}
+    ${backBottom("goRight(openScheduleRoot)")}
   `;
 }
 
@@ -219,10 +233,10 @@ async function openRoute() {
   const data = await res.json();
 
   app.innerHTML = `
-    ${backButton("renderHome()")}
+    ${backButton("goRight(renderHome)")}
     <h1>${data.title}</h1>
     <div class="card">${data.text.replace(/\n/g, "<br><br>")}</div>
-    ${backBottom("renderHome()")}
+    ${backBottom("goRight(renderHome)")}
   `;
 }
 
@@ -233,12 +247,10 @@ async function openRules() {
   const data = await res.json();
 
   app.innerHTML = `
-    ${backButton("renderHome()")}
+    ${backButton("goRight(renderHome)")}
     <h1>${data.title}</h1>
-    <ul class="card">
-      ${data.items.map(i => `<li>${i}</li>`).join("")}
-    </ul>
-    ${backBottom("renderHome()")}
+    <ul class="card">${data.items.map(i => `<li>${i}</li>`).join("")}</ul>
+    ${backBottom("goRight(renderHome)")}
   `;
 }
 
@@ -249,7 +261,7 @@ async function openContacts() {
   const data = await res.json();
 
   app.innerHTML = `
-    ${backButton("renderHome()")}
+    ${backButton("goRight(renderHome)")}
     <h1>📍 ${data.title}</h1>
 
     <div class="contacts-list">
@@ -258,35 +270,20 @@ async function openContacts() {
           <div class="contact-title">${section.title}</div>
           <div class="contact-text">
             ${section.items.map(item => {
-              if (item.type === "text") {
-                return `<div>${item.value}</div>`;
-              }
-              if (item.type === "phone") {
-                return `<div>
-                  <span class="contact-label">${item.label}:</span>
-                  <a class="contact-link" href="tel:${item.value}">${item.value}</a>
-                </div>`;
-              }
-              if (item.type === "link") {
-                return `<div>
-                  <a class="contact-link" href="${item.url}" target="_blank">${item.label}</a>
-                </div>`;
-              }
-              if (item.type === "email") {
-                return `<div>
-                  <span class="contact-label">${item.label}:</span>
-                  <a class="contact-link" href="mailto:${item.value}">${item.value}</a>
-                </div>`;
-              }
+              if (item.type === "text") return `<div>${item.value}</div>`;
+              if (item.type === "phone") return `<div><a class="contact-link" href="tel:${item.value}">${item.value}</a></div>`;
+              if (item.type === "link") return `<div><a class="contact-link" href="${item.url}" target="_blank">${item.label}</a></div>`;
+              if (item.type === "email") return `<div><a class="contact-link" href="mailto:${item.value}">${item.value}</a></div>`;
             }).join("")}
           </div>
         </div>
       `).join("")}
     </div>
 
-    ${backBottom("renderHome()")}
+    ${backBottom("goRight(renderHome)")}
   `;
 }
 
 /* ---------- INIT ---------- */
 renderHome();
+playCurtain("curtain-up");
