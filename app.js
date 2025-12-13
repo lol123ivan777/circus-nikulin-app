@@ -22,8 +22,11 @@ function hideMainButton() {
   tg?.MainButton.hide();
 }
 
-/* ---------- HOME -------------*/
+function backButton(action) {
+  return `<div class="back" onclick="${action}">← Назад</div>`;
+}
 
+/* ---------- HOME ---------- */
 function renderHome() {
   showMainButton();
 
@@ -31,48 +34,70 @@ function renderHome() {
     <h1>🎪 Цирк Никулина</h1>
 
     <div class="cards-grid">
-
-      <div class="image-card"
-        style="background-image:url('assets/cards/artistscard.png')"
-        onclick="openArtists()">
-      </div>
-
-      <div class="image-card"
-        style="background-image:url('assets/cards/schedulecard.png')"
-        onclick="openSchedule('december_2025')">
-      </div>
-
-      <div class="image-card"
-        style="background-image:url('assets/cards/aboutcard.png')"
-        onclick="openAbout()">
-      </div>
-
-      <div class="image-card"
-        style="background-image:url('assets/cards/routecard.png')"
-        onclick="openRoute()">
-      </div>
-
-      <div class="image-card"
-        style="background-image:url('assets/cards/rulescard.png')"
-        onclick="openRules()">
-      </div>
-
-      <div class="image-card"
-        style="background-image:url('assets/cards/contactscard.png')"
-        onclick="openContacts()">
-      </div>
-
+      <div class="image-card" onclick="openArtists()">Артисты</div>
+      <div class="image-card" onclick="openSchedule('december_2025')">Расписание</div>
+      <div class="image-card" onclick="openAboutRoot()">О цирке</div>
+      <div class="image-card" onclick="openRoute()">Как добраться</div>
+      <div class="image-card" onclick="openRules()">Правила</div>
+      <div class="image-card" onclick="openContacts()">Контакты</div>
     </div>
   `;
+}
+
+/* ---------- GENERIC JSON NAV ---------- */
+async function openIndex(path, backAction) {
+  hideMainButton();
+
+  const res = await fetch("/" + path);
+  const data = await res.json();
+
+  app.innerHTML = `
+    ${backButton(backAction)}
+    <h1>${data.title}</h1>
+
+    <div class="list">
+      ${data.sections.map(s => `
+        <div class="card clickable"
+          onclick="openIndexOrPage('${s.path}', '${path}')">
+          ${s.title}
+        </div>
+      `).join("")}
+    </div>
+  `;
+}
+
+async function openIndexOrPage(path, parentPath) {
+  const res = await fetch("/" + path);
+  const data = await res.json();
+
+  // если есть sections — это index
+  if (data.sections) {
+    openIndex(path, `openIndex('${parentPath}', 'renderHome()')`);
+    return;
+  }
+
+  // иначе это конечная страница
+  app.innerHTML = `
+    ${backButton(`openIndex('${parentPath}', 'renderHome()')`)}
+    <h1>${data.title}</h1>
+    <div class="card text">
+      ${data.text.replace(/\n/g, "<br><br>")}
+    </div>
+  `;
+}
+
+/* ---------- ABOUT ROOT ---------- */
+function openAboutRoot() {
+  openIndex("data/about2/index.json", "renderHome()");
 }
 
 /* ---------- ARTISTS ---------- */
 function openArtists() {
   hideMainButton();
   app.innerHTML = `
-    <div class="back" onclick="renderHome()">← Назад</div>
+    ${backButton("renderHome()")}
     <h1>🤹 Артисты</h1>
-    <div class="card">Дальше будет мясо: жанры, карточки, фильтры</div>
+    <div class="card">Скоро будет</div>
   `;
 }
 
@@ -85,38 +110,25 @@ async function openSchedule(monthKey) {
   const month = data[monthKey];
 
   app.innerHTML = `
-    <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>📅 ${month.title}</h1>
+    ${backButton("renderHome()")}
+    <h1>${month.title}</h1>
 
     <div class="grid">
       ${month.days.map(day => `
         <div class="card">
-          <div class="day-title">${day.day} · ${day.weekday}</div>
+          <b>${day.day} · ${day.weekday}</b><br>
           ${
             day.slots === "OFF"
-              ? `<div class="soldout">Выходной</div>`
+              ? "Выходной"
               : day.slots.map(slot =>
                   slot.status === "available"
-                    ? `<button class="time-btn" onclick="tg.openLink('${slot.url}')">${slot.time}</button>`
-                    : `<div class="soldout">${slot.time} · нет билетов</div>`
+                    ? `<button onclick="tg.openLink('${slot.url}')">${slot.time}</button>`
+                    : `<div>${slot.time} · нет билетов</div>`
                 ).join("")
           }
         </div>
       `).join("")}
     </div>
-  `;
-}
-
-/* ---------- ABOUT ---------- */
-async function openAbout() {
-  hideMainButton();
-  const res = await fetch("/data/about.json");
-  const data = await res.json();
-
-  app.innerHTML = `
-    <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>🎪 ${data.title}</h1>
-    <div class="card">${data.text}</div>
   `;
 }
 
@@ -127,9 +139,9 @@ async function openRoute() {
   const data = await res.json();
 
   app.innerHTML = `
-    <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>🗺 ${data.title}</h1>
-    <div class="card">${data.text.replace(/\n/g, "<br>")}</div>
+    ${backButton("renderHome()")}
+    <h1>${data.title}</h1>
+    <div class="card">${data.text.replace(/\n/g, "<br><br>")}</div>
   `;
 }
 
@@ -140,11 +152,11 @@ async function openRules() {
   const data = await res.json();
 
   app.innerHTML = `
-    <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>📜 ${data.title}</h1>
-    <div class="card">
-      <ul>${data.items.map(i => `<li>${i}</li>`).join("")}</ul>
-    </div>
+    ${backButton("renderHome()")}
+    <h1>${data.title}</h1>
+    <ul class="card">
+      ${data.items.map(i => `<li>${i}</li>`).join("")}
+    </ul>
   `;
 }
 
@@ -155,14 +167,14 @@ async function openContacts() {
   const c = await res.json();
 
   app.innerHTML = `
-    <div class="back" onclick="renderHome()">← Назад</div>
-    <h1>📍 Контакты</h1>
+    ${backButton("renderHome()")}
+    <h1>Контакты</h1>
     <div class="card">
       📍 ${c.address}<br><br>
       ☎ ${c.phone}<br>
       🏢 ${c.adminPhone}<br><br>
-      ✈ <a href="${c.telegram}" target="_blank">Telegram</a><br>
-      🌐 <a href="${c.vk}" target="_blank">VK</a>
+      <a href="${c.telegram}" target="_blank">Telegram</a><br>
+      <a href="${c.vk}" target="_blank">VK</a>
     </div>
   `;
 }
