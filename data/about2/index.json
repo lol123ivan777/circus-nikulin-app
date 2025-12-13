@@ -4,12 +4,12 @@
     {
       "id": "history",
       "title": "История",
-      "file": "history/index.json"
+      "path": "data/about2/history/index.json"
     },
     {
       "id": "directors",
       "title": "Художественные руководители",
-      "file": "directors/index.json"
+      "path": "data/about2/directors/index.json"
     }
   ]
 }
