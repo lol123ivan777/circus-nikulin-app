@@ -58,6 +58,31 @@ h1 {
   transition: transform .18s ease, box-shadow .18s ease;
 }
 
+/* ---------- CARD TAP HIGHLIGHT (THEATRE GOLD) ---------- */
+
+/* убираем стандартную синюю подсветку TG */
+.image-card {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* золотая вспышка при нажатии */
+.image-card:active {
+  box-shadow:
+    0 0 32px rgba(242,201,76,.75),
+    inset 0 0 45px rgba(255,210,120,.35),
+    inset 0 0 20px rgba(0,0,0,.4);
+}
+
+/* мягкое затемнение сверху, чтобы не было "пластика" */
+.image-card:active::after {
+  background: linear-gradient(
+    to top,
+    rgba(0,0,0,.65),
+    rgba(0,0,0,.25)
+  );
+}
+
+
 .image-card::after {
   content: "";
   position: absolute;
