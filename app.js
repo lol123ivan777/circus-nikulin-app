@@ -17,18 +17,21 @@ if (tg) {
 }
 
 /* ---------- CURTAIN TRANSITION ---------- */
+
 function transition(type, renderFn) {
   curtain.className = "";
   curtain.style.pointerEvents = "auto";
 
-  // закрываем штору
-  curtain.classList.add(type + "-close");
+  // 1. МЕНЯЕМ КОНТЕНТ СРАЗУ
+  renderFn();
 
+  // 2. В СЛЕДУЮЩЕМ КАДРЕ — ЗАКРЫВАЕМ ШТОРУ
+  requestAnimationFrame(() => {
+    curtain.classList.add(type + "-close");
+  });
+
+  // 3. ПОТОМ ОТКРЫВАЕМ
   setTimeout(() => {
-    // меняем контент ПОД шторой
-    renderFn();
-
-    // открываем штору
     curtain.className = "";
     curtain.classList.add(type + "-open");
 
@@ -112,15 +115,11 @@ async function openIndexOrPage(path, parentPath) {
   const res = await fetch("/" + path);
   const data = await res.json();
 
-  // ЕСЛИ это index (есть sections) — открываем как index
   if (data.sections) {
-    goForward(() =>
-      openIndex(path, `goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)
-    );
-    return;
-  }
+  openIndex(path, `goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`);
+  return;
+}
 
-  // ИНАЧЕ — это конечная страница
   app.innerHTML = `
     ${backButton(`goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)}
     <h1>${data.title}</h1>
