@@ -3,6 +3,7 @@ const curtain = document.getElementById("curtain");
 const tg = window.Telegram?.WebApp;
 
 let scheduleData = null;
+const DURATION = 950;
 
 /* ---------- TELEGRAM ---------- */
 if (tg) {
@@ -16,35 +17,39 @@ if (tg) {
   tg.MainButton.show();
 }
 
-/* ---------- CURTAIN ENGINE ---------- */
+/* ---------- CURTAIN ENGINE (FIXED) ---------- */
 function transition(type, renderFn) {
   document.body.classList.add("transitioning");
 
   curtain.className = "";
   curtain.style.pointerEvents = "auto";
 
+  // 🔒 ЖЁСТКИЙ СБРОС TRANSFORM (КЛЮЧЕВОЙ ФИКС)
+  curtain.style.transform = "translate(0, 0)";
+
   requestAnimationFrame(() => {
-    curtain.classList.add(type + "-close");
+    curtain.classList.add(`${type}-close`);
   });
 
   setTimeout(() => {
     renderFn();
 
     curtain.className = "";
-    curtain.classList.add(type + "-open");
+    curtain.style.transform = "translate(0, 0)";
+    curtain.classList.add(`${type}-open`);
 
     setTimeout(() => {
       curtain.className = "";
       curtain.style.pointerEvents = "none";
       document.body.classList.remove("transitioning");
-    }, 950);
+    }, DURATION);
 
-  }, 950);
+  }, DURATION);
 }
 
 const goForward = fn => transition("curtain-left", fn);
-const goBack = fn => transition("curtain-right", fn);
-const goUp = fn => transition("curtain-up", fn);
+const goBack    = fn => transition("curtain-right", fn);
+const goUp      = fn => transition("curtain-up", fn);
 
 /* ---------- HELPERS ---------- */
 const showMainButton = () => tg?.MainButton.show();
