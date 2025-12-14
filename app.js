@@ -18,15 +18,15 @@ if (tg) {
 
 /* ---------- CURTAIN ENGINE ---------- */
 function transition(type, renderFn) {
+  document.body.classList.add("transitioning");
+
   curtain.className = "";
   curtain.style.pointerEvents = "auto";
 
-  // закрываем штору
   requestAnimationFrame(() => {
     curtain.classList.add(type + "-close");
   });
 
-  // когда штора закрылась — меняем контент
   setTimeout(() => {
     renderFn();
 
@@ -36,6 +36,7 @@ function transition(type, renderFn) {
     setTimeout(() => {
       curtain.className = "";
       curtain.style.pointerEvents = "none";
+      document.body.classList.remove("transitioning");
     }, 950);
 
   }, 950);
@@ -81,13 +82,11 @@ function openAboutRoot() {
 /* ---------- GENERIC JSON NAV ---------- */
 async function openIndex(path, backAction) {
   hideMainButton();
-
   const data = await (await fetch("/" + path)).json();
 
   app.innerHTML = `
     ${backButton(backAction)}
     <h1>${data.title}</h1>
-
     <div class="list">
       ${data.sections.map(s => `
         <div class="card clickable"
@@ -96,7 +95,6 @@ async function openIndex(path, backAction) {
         </div>
       `).join("")}
     </div>
-
     ${backBottom(backAction)}
   `;
 }
@@ -104,7 +102,6 @@ async function openIndex(path, backAction) {
 async function openIndexOrPage(path, parentPath) {
   const data = await (await fetch("/" + path)).json();
 
-  // если это вложенный index
   if (data.sections) {
     goForward(() =>
       openIndex(
@@ -115,7 +112,6 @@ async function openIndexOrPage(path, parentPath) {
     return;
   }
 
-  // конечная страница
   goForward(() => {
     app.innerHTML = `
       ${backButton(`goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)}
@@ -136,7 +132,6 @@ async function openArtists() {
   app.innerHTML = `
     ${backButton("goBack(renderHome)")}
     <h1>Артисты</h1>
-
     <div class="list">
       ${artists.map(a => `
         <div class="artist-card">
@@ -145,7 +140,6 @@ async function openArtists() {
         </div>
       `).join("")}
     </div>
-
     ${backBottom("goBack(renderHome)")}
   `;
 }
@@ -161,7 +155,6 @@ async function openScheduleRoot() {
   app.innerHTML = `
     ${backButton("goBack(renderHome)")}
     <h1>Расписание</h1>
-
     <div class="list">
       ${Object.entries(scheduleData).map(([key, m]) => `
         <div class="card clickable"
@@ -170,7 +163,6 @@ async function openScheduleRoot() {
         </div>
       `).join("")}
     </div>
-
     ${backBottom("goBack(renderHome)")}
   `;
 }
@@ -181,7 +173,6 @@ function openScheduleMonth(key) {
   app.innerHTML = `
     ${backButton("goBack(openScheduleRoot)")}
     <h1>${m.title}</h1>
-
     <div class="grid">
       ${m.days.map(d => `
         <div class="card">
@@ -200,7 +191,6 @@ function openScheduleMonth(key) {
         </div>
       `).join("")}
     </div>
-
     ${backBottom("goBack(openScheduleRoot)")}
   `;
 }
@@ -239,24 +229,20 @@ async function openContacts() {
   app.innerHTML = `
     ${backButton("goBack(renderHome)")}
     <h1>${data.title}</h1>
-
     <div class="contacts-list">
       ${data.sections.map(s => `
         <div class="contact-block">
           <div class="contact-title">${s.title}</div>
-          <div class="contact-text">
-            ${s.items.map(i => {
-              if (i.type === "text") return `<div>${i.value}</div>`;
-              if (i.type === "phone") return `<div><a class="contact-link" href="tel:${i.value}">${i.value}</a></div>`;
-              if (i.type === "email") return `<div><a class="contact-link" href="mailto:${i.value}">${i.value}</a></div>`;
-              if (i.type === "link") return `<div><a class="contact-link" href="${i.url}" target="_blank">${i.label}</a></div>`;
-              return "";
-            }).join("")}
-          </div>
+          ${s.items.map(i => {
+            if (i.type === "text") return `<div>${i.value}</div>`;
+            if (i.type === "phone") return `<a class="contact-link" href="tel:${i.value}">${i.value}</a>`;
+            if (i.type === "email") return `<a class="contact-link" href="mailto:${i.value}">${i.value}</a>`;
+            if (i.type === "link") return `<a class="contact-link" href="${i.url}" target="_blank">${i.label}</a>`;
+            return "";
+          }).join("")}
         </div>
       `).join("")}
     </div>
-
     ${backBottom("goBack(renderHome)")}
   `;
 }
