@@ -1,10 +1,10 @@
 const app = document.getElementById("app");
-const tg = window.Telegram?.WebApp;
 const curtain = document.getElementById("curtain");
+const tg = window.Telegram?.WebApp;
 
 let scheduleData = null;
 
-/* ---------- TELEGRAM INIT ---------- */
+/* ---------- TELEGRAM ---------- */
 if (tg) {
   tg.ready();
   tg.expand();
@@ -16,22 +16,20 @@ if (tg) {
   tg.MainButton.show();
 }
 
-/* ---------- CURTAIN TRANSITION ---------- */
-
+/* ---------- CURTAIN ENGINE ---------- */
 function transition(type, renderFn) {
   curtain.className = "";
   curtain.style.pointerEvents = "auto";
 
-  // 1. МЕНЯЕМ КОНТЕНТ СРАЗУ
-  renderFn();
-
-  // 2. В СЛЕДУЮЩЕМ КАДРЕ — ЗАКРЫВАЕМ ШТОРУ
+  // закрываем штору
   requestAnimationFrame(() => {
     curtain.classList.add(type + "-close");
   });
 
-  // 3. ПОТОМ ОТКРЫВАЕМ
+  // когда штора закрылась — меняем контент
   setTimeout(() => {
+    renderFn();
+
     curtain.className = "";
     curtain.classList.add(type + "-open");
 
@@ -43,32 +41,19 @@ function transition(type, renderFn) {
   }, 950);
 }
 
-function goForward(fn) {
-  transition("curtain-left", fn);
-}
-
-function goBack(fn) {
-  transition("curtain-right", fn);
-}
-
-function goUp(fn) {
-  transition("curtain-up", fn);
-}
+const goForward = fn => transition("curtain-left", fn);
+const goBack = fn => transition("curtain-right", fn);
+const goUp = fn => transition("curtain-up", fn);
 
 /* ---------- HELPERS ---------- */
-function showMainButton() {
-  tg?.MainButton.show();
-}
-function hideMainButton() {
-  tg?.MainButton.hide();
-}
+const showMainButton = () => tg?.MainButton.show();
+const hideMainButton = () => tg?.MainButton.hide();
 
-function backButton(action) {
-  return `<div class="back" onclick="${action}">← Назад</div>`;
-}
-function backBottom(action) {
-  return `<div class="back back-bottom" onclick="${action}">← Назад</div>`;
-}
+const backButton = action =>
+  `<div class="back" onclick="${action}">← Назад</div>`;
+
+const backBottom = action =>
+  `<div class="back back-bottom" onclick="${action}">← Назад</div>`;
 
 /* ---------- HOME ---------- */
 function renderHome() {
@@ -88,57 +73,70 @@ function renderHome() {
 
 /* ---------- ABOUT ---------- */
 function openAboutRoot() {
-  openIndex("data/about2/index.json", "goBack(renderHome)");
+  goForward(() =>
+    openIndex("data/about2/index.json", "goBack(renderHome)")
+  );
 }
 
 /* ---------- GENERIC JSON NAV ---------- */
 async function openIndex(path, backAction) {
   hideMainButton();
-  const res = await fetch("/" + path);
-  const data = await res.json();
+
+  const data = await (await fetch("/" + path)).json();
 
   app.innerHTML = `
     ${backButton(backAction)}
     <h1>${data.title}</h1>
+
     <div class="list">
       ${data.sections.map(s => `
-        <div class="card clickable" onclick="goForward(() => openIndexOrPage('${s.path}', '${path}'))">
+        <div class="card clickable"
+          onclick="openIndexOrPage('${s.path}', '${path}')">
           ${s.title}
         </div>
       `).join("")}
     </div>
+
     ${backBottom(backAction)}
   `;
 }
 
 async function openIndexOrPage(path, parentPath) {
-  const res = await fetch("/" + path);
-  const data = await res.json();
+  const data = await (await fetch("/" + path)).json();
 
+  // если это вложенный index
   if (data.sections) {
-  openIndex(path, `goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`);
-  return;
-}
+    goForward(() =>
+      openIndex(
+        path,
+        `goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`
+      )
+    );
+    return;
+  }
 
-  app.innerHTML = `
-    ${backButton(`goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)}
-    <h1>${data.title}</h1>
-    <div class="card text">
-      ${data.text.replace(/\n/g, "<br><br>")}
-    </div>
-    ${backBottom(`goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)}
-  `;
+  // конечная страница
+  goForward(() => {
+    app.innerHTML = `
+      ${backButton(`goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)}
+      <h1>${data.title}</h1>
+      <div class="card text">
+        ${data.text.replace(/\n/g, "<br><br>")}
+      </div>
+      ${backBottom(`goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)}
+    `;
+  });
 }
 
 /* ---------- ARTISTS ---------- */
 async function openArtists() {
   hideMainButton();
-  const res = await fetch("/data/artists.json");
-  const artists = await res.json();
+  const artists = await (await fetch("/data/artists.json")).json();
 
   app.innerHTML = `
     ${backButton("goBack(renderHome)")}
-    <h1>🤹 Артисты</h1>
+    <h1>Артисты</h1>
+
     <div class="list">
       ${artists.map(a => `
         <div class="artist-card">
@@ -147,6 +145,7 @@ async function openArtists() {
         </div>
       `).join("")}
     </div>
+
     ${backBottom("goBack(renderHome)")}
   `;
 }
@@ -154,47 +153,54 @@ async function openArtists() {
 /* ---------- SCHEDULE ---------- */
 async function openScheduleRoot() {
   hideMainButton();
+
   if (!scheduleData) {
-    const res = await fetch("/data/schedule.json");
-    scheduleData = await res.json();
+    scheduleData = await (await fetch("/data/schedule.json")).json();
   }
 
   app.innerHTML = `
     ${backButton("goBack(renderHome)")}
-    <h1>📅 Расписание</h1>
+    <h1>Расписание</h1>
+
     <div class="list">
-      ${Object.entries(scheduleData).map(([key, month]) => `
-        <div class="card clickable" onclick="goForward(() => openScheduleMonth('${key}'))">
-          ${month.title}
+      ${Object.entries(scheduleData).map(([key, m]) => `
+        <div class="card clickable"
+          onclick="goForward(() => openScheduleMonth('${key}'))">
+          ${m.title}
         </div>
       `).join("")}
     </div>
+
     ${backBottom("goBack(renderHome)")}
   `;
 }
 
 function openScheduleMonth(key) {
-  const month = scheduleData[key];
+  const m = scheduleData[key];
 
   app.innerHTML = `
     ${backButton("goBack(openScheduleRoot)")}
-    <h1>${month.title}</h1>
+    <h1>${m.title}</h1>
+
     <div class="grid">
-      ${month.days.map(day => `
+      ${m.days.map(d => `
         <div class="card">
-          <div class="day-title">${day.day} · ${day.weekday}</div>
+          <div class="day-title">${d.day} · ${d.weekday}</div>
           ${
-            day.slots === "OFF"
+            d.slots === "OFF"
               ? `<div class="soldout">Выходной</div>`
-              : day.slots.map(s =>
+              : d.slots.map(s =>
                   s.status === "soldout"
                     ? `<div class="soldout">${s.time} · нет билетов</div>`
-                    : `<a href="${s.url}" target="_blank"><button class="time-btn">${s.time}</button></a>`
+                    : `<a href="${s.url}" target="_blank">
+                        <button class="time-btn">${s.time}</button>
+                      </a>`
                 ).join("")
           }
         </div>
       `).join("")}
     </div>
+
     ${backBottom("goBack(openScheduleRoot)")}
   `;
 }
@@ -203,57 +209,47 @@ function openScheduleMonth(key) {
 async function openRoute() {
   hideMainButton();
   const d = await (await fetch("/data/route.json")).json();
-  app.innerHTML = `${backButton("goBack(renderHome)")}<h1>${d.title}</h1><div class="card">${d.text}</div>${backBottom("goBack(renderHome)")}`;
+
+  app.innerHTML = `
+    ${backButton("goBack(renderHome)")}
+    <h1>${d.title}</h1>
+    <div class="card">${d.text}</div>
+    ${backBottom("goBack(renderHome)")}
+  `;
 }
 
 async function openRules() {
   hideMainButton();
   const d = await (await fetch("/data/rules.json")).json();
-  app.innerHTML = `${backButton("goBack(renderHome)")}<h1>${d.title}</h1><ul class="card">${d.items.map(i => `<li>${i}</li>`).join("")}</ul>${backBottom("goBack(renderHome)")}`;
+
+  app.innerHTML = `
+    ${backButton("goBack(renderHome)")}
+    <h1>${d.title}</h1>
+    <ul class="card">
+      ${d.items.map(i => `<li>${i}</li>`).join("")}
+    </ul>
+    ${backBottom("goBack(renderHome)")}
+  `;
 }
 
 async function openContacts() {
   hideMainButton();
-
-  const res = await fetch("/data/contacts.json");
-  const data = await res.json();
+  const data = await (await fetch("/data/contacts.json")).json();
 
   app.innerHTML = `
     ${backButton("goBack(renderHome)")}
-    <h1>📍 ${data.title}</h1>
+    <h1>${data.title}</h1>
 
     <div class="contacts-list">
-      ${data.sections.map(section => `
+      ${data.sections.map(s => `
         <div class="contact-block">
-          <div class="contact-title">${section.title}</div>
+          <div class="contact-title">${s.title}</div>
           <div class="contact-text">
-            ${section.items.map(item => {
-              if (item.type === "text") {
-                return `<div>${item.value}</div>`;
-              }
-              if (item.type === "phone") {
-                return `
-                  <div>
-                    <span class="contact-label">${item.label}:</span>
-                    <a class="contact-link" href="tel:${item.value}">${item.value}</a>
-                  </div>
-                `;
-              }
-              if (item.type === "link") {
-                return `
-                  <div>
-                    <a class="contact-link" href="${item.url}" target="_blank">${item.label}</a>
-                  </div>
-                `;
-              }
-              if (item.type === "email") {
-                return `
-                  <div>
-                    <span class="contact-label">${item.label}:</span>
-                    <a class="contact-link" href="mailto:${item.value}">${item.value}</a>
-                  </div>
-                `;
-              }
+            ${s.items.map(i => {
+              if (i.type === "text") return `<div>${i.value}</div>`;
+              if (i.type === "phone") return `<div><a class="contact-link" href="tel:${i.value}">${i.value}</a></div>`;
+              if (i.type === "email") return `<div><a class="contact-link" href="mailto:${i.value}">${i.value}</a></div>`;
+              if (i.type === "link") return `<div><a class="contact-link" href="${i.url}" target="_blank">${i.label}</a></div>`;
               return "";
             }).join("")}
           </div>
