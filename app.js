@@ -112,10 +112,21 @@ async function openIndexOrPage(path, parentPath) {
   const res = await fetch("/" + path);
   const data = await res.json();
 
+  // ЕСЛИ это index (есть sections) — открываем как index
+  if (data.sections) {
+    goForward(() =>
+      openIndex(path, `goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)
+    );
+    return;
+  }
+
+  // ИНАЧЕ — это конечная страница
   app.innerHTML = `
     ${backButton(`goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)}
     <h1>${data.title}</h1>
-    <div class="card text">${data.text.replace(/\n/g, "<br><br>")}</div>
+    <div class="card text">
+      ${data.text.replace(/\n/g, "<br><br>")}
+    </div>
     ${backBottom(`goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)}
   `;
 }
