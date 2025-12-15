@@ -8,11 +8,9 @@ body {
   min-height: 100vh;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;
   color: #f5d98b;
-
   background:
     linear-gradient(rgba(70,10,10,.8), rgba(20,0,0,.9)),
-    url("assets/ffc4f6c27a2acafe6d4c7a9891b88650.jpg") center/cover no-repeat;
-
+    url("assets/ffc4f6c27a2acafe6d4c7a9891b88650.jpg") center/cover no-repeat fixed;
   background-color: #2b0505;
 }
 
@@ -28,7 +26,6 @@ h1 {
   font-weight: 800;
   color: #f2c94c;
   text-align: center;
-
   text-shadow:
     0 0 12px rgba(242,201,76,.4),
     0 0 24px rgba(180,140,40,.25);
@@ -50,118 +47,107 @@ h1 {
   background-size: cover;
   background-position: center;
   cursor: pointer;
-
   box-shadow:
     0 0 18px rgba(180,90,40,.45),
     inset 0 0 30px rgba(0,0,0,.35);
-
-  transition: transform .18s ease, box-shadow .18s ease;
-}
-
-/* ---------- CARD TAP HIGHLIGHT (THEATRE GOLD) ---------- */
-
-/* убираем стандартную синюю подсветку TG */
-.image-card {
+  transition: all .2s ease;
   -webkit-tap-highlight-color: transparent;
+  overflow: hidden;
 }
-
-/* золотая вспышка при нажатии */
-.image-card:active {
-  box-shadow:
-    0 0 32px rgba(242,201,76,.75),
-    inset 0 0 45px rgba(255,210,120,.35),
-    inset 0 0 20px rgba(0,0,0,.4);
-}
-
-/* мягкое затемнение сверху, чтобы не было "пластика" */
-.image-card:active::after {
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,.65),
-    rgba(0,0,0,.25)
-  );
-}
-
 
 .image-card::after {
   content: "";
   position: absolute;
   inset: 0;
   border-radius: 22px;
-  background: linear-gradient(
-    to top,
-    rgba(0,0,0,.55),
-    rgba(0,0,0,.15)
-  );
+  background: linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.15));
+  transition: background .2s ease;
+  pointer-events: none;
+}
+
+.image-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 0 24px rgba(242,201,76,.6),
+    inset 0 0 30px rgba(0,0,0,.35);
 }
 
 .image-card:active {
   transform: scale(.96);
   box-shadow:
-    0 0 28px rgba(242,201,76,.7),
-    inset 0 0 40px rgba(0,0,0,.4);
+    0 0 32px rgba(242,201,76,.75),
+    inset 0 0 45px rgba(255,210,120,.35),
+    inset 0 0 20px rgba(0,0,0,.4);
 }
 
-/* ---------- BACK BUTTON (MAIN HERO) ---------- */
+.image-card:active::after {
+  background: linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,.25));
+}
+
+/* ---------- BACK BUTTON ---------- */
 .back {
   margin: 12px auto 20px;
   padding: 14px 22px;
   width: 80%;
   max-width: 320px;
-
   text-align: center;
   font-size: 16px;
   font-weight: 800;
   letter-spacing: .3px;
-
   color: #f2c94c;
   cursor: pointer;
-
   border-radius: 18px;
   border: 1px solid rgba(200,120,40,.45);
-
+  border-top-color: rgba(242,201,76,.4);
   background:
-    linear-gradient(
-      rgba(120,20,20,.75),
-      rgba(90,10,10,.85)
-    );
-
+    linear-gradient(rgba(120,20,20,.75), rgba(90,10,10,.85)),
+    radial-gradient(circle at center, rgba(242,201,76,.08) 0%, transparent 70%);
   box-shadow:
     0 6px 18px rgba(0,0,0,.45),
     inset 0 0 12px rgba(255,200,80,.15);
+  transition: all .18s ease;
+}
 
-  transition:
-    transform .15s ease,
-    box-shadow .15s ease,
-    background .15s ease;
+.back:hover {
+  transform: translateY(-2px);
+  box-shadow:
+    0 8px 24px rgba(0,0,0,.5),
+    inset 0 0 16px rgba(255,220,120,.25);
 }
 
 .back:active {
-  transform: scale(.96);
+  transform: scale(.96) translateY(0);
   background:
-    linear-gradient(
-      rgba(160,30,30,.85),
-      rgba(120,15,15,.95)
-    );
+    linear-gradient(rgba(160,30,30,.85), rgba(120,15,15,.95));
   box-shadow:
-    0 0 20px rgba(242,201,76,.6),
-    inset 0 0 16px rgba(255,220,120,.3);
+    0 0 24px rgba(242,201,76,.8),
+    inset 0 0 20px rgba(255,220,120,.4);
 }
 
-/* ---------- BACK BOTTOM ---------- */
 .back-bottom {
   margin: 28px auto 10px;
 }
 
 /* ---------- GENERIC CARD ---------- */
-.card {
+.card,
+.artist-card,
+.contact-block {
   background: rgba(60,10,10,.75);
   border-radius: 18px;
   padding: 16px;
   border: 1px solid rgba(200,120,40,.35);
+  box-shadow: 0 0 14px rgba(0,0,0,.45);
+  backdrop-filter: blur(4px);
+  transition: all .2s ease;
+}
 
-  box-shadow:
-    0 0 14px rgba(0,0,0,.45);
+.card:hover,
+.artist-card:hover,
+.contact-block:hover,
+.card.clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,.6);
+  border-color: rgba(242,201,76,.5);
 }
 
 /* ---------- LISTS ---------- */
@@ -174,7 +160,6 @@ h1 {
 /* ---------- ARTISTS ---------- */
 .artist-card {
   background: rgba(0,0,0,.35);
-  border-radius: 16px;
   padding: 14px 16px;
 }
 
@@ -196,6 +181,12 @@ h1 {
   gap: 12px;
 }
 
+@media (max-width: 360px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 .day-title {
   font-weight: 700;
   margin-bottom: 8px;
@@ -204,25 +195,45 @@ h1 {
 
 .time-btn {
   margin-top: 6px;
-  padding: 10px;
+  padding: 10px 14px;
   border-radius: 14px;
-  border: none;
-
-  background: rgba(120,20,20,.7);
+  border: 1px solid rgba(242,201,76,.4);
+  background: linear-gradient(145deg, rgba(140,30,30,.8), rgba(100,15,15,.9));
   color: #f5d98b;
   font-weight: 600;
-
+  cursor: pointer;
   box-shadow:
-    inset 0 0 10px rgba(255,200,80,.12);
+    0 4px 12px rgba(0,0,0,.4),
+    inset 0 1px 3px rgba(255,255,255,.1);
+  transition: all .18s ease;
+}
+
+.time-btn:hover {
+  background: linear-gradient(145deg, rgba(160,40,40,.9), rgba(120,20,20,1));
+  border-color: #f2c94c;
+  box-shadow:
+    0 6px 16px rgba(0,0,0,.5),
+    inset 0 1px 4px rgba(255,255,255,.15);
 }
 
 .time-btn:active {
-  transform: scale(.96);
+  transform: scale(.94);
+  box-shadow: 0 0 18px rgba(242,201,76,.7);
 }
 
 .soldout {
   font-size: 13px;
   color: #d27c7c;
+  margin-top: 6px;
+  opacity: .9;
+}
+
+/* ---------- TEXT CONTENT ---------- */
+.card.text {
+  line-height: 1.65;
+  font-size: 15.5px;
+  max-width: 640px;
+  margin: 0 auto;
 }
 
 /* ---------- CONTACTS ---------- */
@@ -230,13 +241,6 @@ h1 {
   display: flex;
   flex-direction: column;
   gap: 16px;
-}
-
-.contact-block {
-  background: rgba(60,10,10,.75);
-  border-radius: 18px;
-  padding: 16px;
-  border: 1px solid rgba(200,120,40,.35);
 }
 
 .contact-title {
@@ -262,9 +266,13 @@ h1 {
   opacity: .6;
 }
 
-.contact-label {
-  opacity: .7;
-  margin-right: 6px;
+/* ---------- ACCESSIBILITY ---------- */
+.image-card:focus-visible,
+.card.clickable:focus-visible,
+.time-btn:focus-visible,
+.back:focus-visible {
+  outline: 2px solid #f2c94c;
+  outline-offset: 4px;
 }
 
 /* ---------- THEATRE CURTAIN ---------- */
@@ -273,37 +281,28 @@ h1 {
   inset: 0;
   z-index: 9999;
   pointer-events: none;
-
   background:
     repeating-linear-gradient(
       90deg,
-      rgba(0,0,0,.35) 0px,
-      rgba(0,0,0,.35) 14px,
-      rgba(255,255,255,.05) 22px,
-      rgba(0,0,0,.35) 32px
+      rgba(80,10,10,.4) 0px,
+      rgba(100,15,15,.4) 10px,
+      rgba(242,201,76,.08) 10px,
+      rgba(100,15,15,.4) 20px,
+      rgba(80,10,10,.4) 30px
     ),
-    linear-gradient(
-      to bottom,
-      #7a0f14,
-      #4b080c,
-      #2a0406
-    );
-
+    linear-gradient(to bottom, #8a1015, #5b0a0e, #3a0508);
   box-shadow:
     inset 0 0 60px rgba(0,0,0,.6),
     inset 0 -40px 80px rgba(0,0,0,.7);
-
   transform: translateY(100%);
+  opacity: .98;
 }
 
 /* ---------- CURTAIN ANIMATIONS ---------- */
-
 .curtain-up-close { animation: curtainUpClose .95s ease-in forwards; }
 .curtain-up-open { animation: curtainUpOpen .95s ease-out forwards; }
-
 .curtain-left-close { animation: curtainLeftClose .95s ease-in forwards; }
 .curtain-left-open { animation: curtainLeftOpen .95s ease-out forwards; }
-
 .curtain-right-close { animation: curtainRightClose .95s ease-in forwards; }
 .curtain-right-open { animation: curtainRightOpen .95s ease-out forwards; }
 
@@ -315,7 +314,6 @@ h1 {
   from { transform: translateY(0); }
   to { transform: translateY(-110%); }
 }
-
 @keyframes curtainLeftClose {
   from { transform: translateX(100%); }
   to { transform: translateX(0); }
@@ -324,7 +322,6 @@ h1 {
   from { transform: translateX(0); }
   to { transform: translateX(-110%); }
 }
-
 @keyframes curtainRightClose {
   from { transform: translateX(-100%); }
   to { transform: translateX(0); }
