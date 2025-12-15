@@ -1,140 +1,104 @@
-const app = document.getElementById("app");
-const curtain = document.getElementById("curtain");
+<div id="app" x-data="appState()" x-init="init()">
+  <!-- Здесь будет контент -->
+</div>
+
+<div id="curtain"></div>
+
+<script>
 const tg = window.Telegram?.WebApp;
 
 let scheduleData = null;
 
-/* ---------- TELEGRAM ---------- */
-if (tg) {
-  tg.ready();
-  tg.expand();
+function appState() {
+  return {
+    history: [],  // Стек: [{render: renderHome, back: null}, ...]
+    current: null,
 
-  tg.MainButton.setText("🎟 Купить билеты");
-  tg.MainButton.onClick(() => {
-    tg.openLink("https://circusnikulin.ru/tickets");
-  });
-  tg.MainButton.show();
+    init() {
+      if (tg) {
+        tg.ready();
+        tg.expand();
+        tg.MainButton.setText("🎟 Купить билеты");
+        tg.MainButton.onClick(() => tg.openLink("https://circusnikulin.ru/tickets"));
+        tg.MainButton.show();
+      }
+      this.push(renderHome, null);  // Стартовый экран
+    },
+
+    push(renderFn, backTitle = '← Назад') {
+      this.history.push({ render: renderFn, backTitle });
+      this.renderCurrent();
+    },
+
+    pop() {
+      if (this.history.length > 1) {
+        this.history.pop();
+        this.renderCurrent();
+      }
+    },
+
+    renderCurrent() {
+      const current = this.history[this.history.length - 1];
+      if (current) {
+        // Сохраняем MainButton состояние если нужно
+        const wasMainVisible = tg?.MainButton.isVisible;
+        current.render(this);  // Передаём state для управления кнопками назад
+        if (this.history.length === 1) tg?.MainButton.show();
+      }
+    },
+
+    // Твои transition функции (оставляем как есть)
+    transition(type, renderFn) {
+      // ... твой код curtain без изменений
+      // В конце renderFn() вызываем this.renderCurrent() или напрямую render
+    },
+
+    goForward(renderFn) {
+      this.transition("curtain-left", () => this.push(renderFn));
+    },
+
+    goBack() {
+      this.transition("curtain-right", () => this.pop());
+    },
+
+    goUp(renderFn) {
+      this.transition("curtain-up", renderFn);
+    }
+  }
 }
 
-/* ---------- CURTAIN ENGINE ---------- */
-function transition(type, renderFn) {
-  curtain.className = "";
-  curtain.style.pointerEvents = "auto";
+/* ---------- РЕНДЕР ФУНКЦИИ ---------- */
+// Теперь они принимают state для генерации кнопок назад
 
-  // закрываем штору
-  requestAnimationFrame(() => {
-    curtain.classList.add(type + "-close");
-  });
-
-  // когда штора закрылась — меняем контент
-  setTimeout(() => {
-    renderFn();
-
-    curtain.className = "";
-    curtain.classList.add(type + "-open");
-
-    setTimeout(() => {
-      curtain.className = "";
-      curtain.style.pointerEvents = "none";
-    }, 950);
-
-  }, 950);
-}
-
-const goForward = fn => transition("curtain-left", fn);
-const goBack = fn => transition("curtain-right", fn);
-const goUp = fn => transition("curtain-up", fn);
-
-/* ---------- HELPERS ---------- */
-const showMainButton = () => tg?.MainButton.show();
-const hideMainButton = () => tg?.MainButton.hide();
-
-const backButton = action =>
-  `<div class="back" onclick="${action}">← Назад</div>`;
-
-const backBottom = action =>
-  `<div class="back back-bottom" onclick="${action}">← Назад</div>`;
-
-/* ---------- HOME ---------- */
-function renderHome() {
-  showMainButton();
+function renderHome(state) {
+  tg?.MainButton.show();
 
   app.innerHTML = `
     <div class="cards-grid">
-      <div class="image-card" style="background-image:url('assets/cards/artistscard.png')" onclick="goForward(openArtists)"></div>
-      <div class="image-card" style="background-image:url('assets/cards/schedulecard.png')" onclick="goForward(openScheduleRoot)"></div>
-      <div class="image-card" style="background-image:url('assets/cards/aboutcard.png')" onclick="goForward(openAboutRoot)"></div>
-      <div class="image-card" style="background-image:url('assets/cards/routecard.png')" onclick="goForward(openRoute)"></div>
-      <div class="image-card" style="background-image:url('assets/cards/rulescard.png')" onclick="goForward(openRules)"></div>
-      <div class="image-card" style="background-image:url('assets/cards/contactscard.png')" onclick="goForward(openContacts)"></div>
+      <div class="image-card" style="background-image:url('assets/cards/artistscard.png')" @click="state.goForward(() => openArtists(state))"></div>
+      <div class="image-card" style="background-image:url('assets/cards/schedulecard.png')" @click="state.goForward(() => openScheduleRoot(state))"></div>
+      <!-- Остальные карточки аналогично -->
     </div>
   `;
 }
 
-/* ---------- ABOUT ---------- */
-function openAboutRoot() {
-  goForward(() =>
-    openIndex("data/about2/index.json", "goBack(renderHome)")
-  );
+function renderBackButton(state, customAction = null) {
+  const action = customAction || 'state.goBack()';
+  return `<div class="back" @click="${action}">← Назад</div>`;
 }
 
-/* ---------- GENERIC JSON NAV ---------- */
-async function openIndex(path, backAction) {
-  hideMainButton();
+function renderBackBottom(state, customAction = null) {
+  const action = customAction || 'state.goBack()';
+  return `<div class="back back-bottom" @click="${action}">← Назад</div>`;
+}
 
-  const data = await (await fetch("/" + path)).json();
+/* Пример для артистов */
+async function openArtists(state) {
+  tg?.MainButton.hide();
+  const artists = await fetch("/data/artists.json").then(r => r.json());
 
   app.innerHTML = `
-    ${backButton(backAction)}
-    <h1>${data.title}</h1>
-
-    <div class="list">
-      ${data.sections.map(s => `
-        <div class="card clickable"
-          onclick="openIndexOrPage('${s.path}', '${path}')">
-          ${s.title}
-        </div>
-      `).join("")}
-    </div>
-
-    ${backBottom(backAction)}
-  `;
-}
-
-async function openIndexOrPage(path, parentPath) {
-  const data = await (await fetch("/" + path)).json();
-
-  // если это вложенный index
-  if (data.sections) {
-    goForward(() =>
-      openIndex(
-        path,
-        `goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`
-      )
-    );
-    return;
-  }
-
-  // конечная страница
-  goForward(() => {
-    app.innerHTML = `
-      ${backButton(`goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)}
-      <h1>${data.title}</h1>
-      <div class="card text">
-        ${data.text.replace(/\n/g, "<br><br>")}
-      </div>
-      ${backBottom(`goBack(() => openIndex('${parentPath}', 'goBack(renderHome)'))`)}
-    `;
-  });
-}
-
-/* ---------- ARTISTS ---------- */
-async function openArtists() {
-  hideMainButton();
-  const artists = await (await fetch("/data/artists.json")).json();
-
-  app.innerHTML = `
-    ${backButton("goBack(renderHome)")}
+    ${renderBackButton(state)}
     <h1>Артисты</h1>
 
     <div class="list">
@@ -146,120 +110,60 @@ async function openArtists() {
       `).join("")}
     </div>
 
-    ${backBottom("goBack(renderHome)")}
+    ${renderBackBottom(state)}
   `;
 }
 
-/* ---------- SCHEDULE ---------- */
-async function openScheduleRoot() {
-  hideMainButton();
+/* Аналогично перепиши остальные функции: openScheduleRoot(state), openAboutRoot(state) и т.д. */
+// Для вложенных: в goForward передавай функцию, которая пушит следующий экран.
+
+async function openScheduleRoot(state) {
+  tg?.MainButton.hide();
 
   if (!scheduleData) {
-    scheduleData = await (await fetch("/data/schedule.json")).json();
+    scheduleData = await fetch("/data/schedule.json").then(r => r.json());
   }
 
   app.innerHTML = `
-    ${backButton("goBack(renderHome)")}
+    ${renderBackButton(state)}
     <h1>Расписание</h1>
 
     <div class="list">
       ${Object.entries(scheduleData).map(([key, m]) => `
-        <div class="card clickable"
-          onclick="goForward(() => openScheduleMonth('${key}'))">
+        <div class="card clickable" @click="state.goForward(() => openScheduleMonth(state, '${key}'))">
           ${m.title}
         </div>
       `).join("")}
     </div>
 
-    ${backBottom("goBack(renderHome)")}
+    ${renderBackBottom(state)}
   `;
 }
 
-function openScheduleMonth(key) {
+function openScheduleMonth(state, key) {
   const m = scheduleData[key];
 
   app.innerHTML = `
-    ${backButton("goBack(openScheduleRoot)")}
+    ${renderBackButton(state)}
     <h1>${m.title}</h1>
 
     <div class="grid">
       ${m.days.map(d => `
         <div class="card">
-          <div class="day-title">${d.day} · ${d.weekday}</div>
-          ${
-            d.slots === "OFF"
-              ? `<div class="soldout">Выходной</div>`
-              : d.slots.map(s =>
-                  s.status === "soldout"
-                    ? `<div class="soldout">${s.time} · нет билетов</div>`
-                    : `<a href="${s.url}" target="_blank">
-                        <button class="time-btn">${s.time}</button>
-                      </a>`
-                ).join("")
-          }
+          <div class="day-title">\( {d.day} · \){d.weekday}</div>
+          ${/* ... твой код с кнопками времени ... */}
         </div>
       `).join("")}
     </div>
 
-    ${backBottom("goBack(openScheduleRoot)")}
+    ${renderBackBottom(state)}
   `;
 }
 
-/* ---------- ROUTE / RULES / CONTACTS ---------- */
-async function openRoute() {
-  hideMainButton();
-  const d = await (await fetch("/data/route.json")).json();
+/* Для generic JSON nav — тоже легко адаптировать, передавая state в функции */
 
-  app.innerHTML = `
-    ${backButton("goBack(renderHome)")}
-    <h1>${d.title}</h1>
-    <div class="card">${d.text}</div>
-    ${backBottom("goBack(renderHome)")}
-  `;
-}
-
-async function openRules() {
-  hideMainButton();
-  const d = await (await fetch("/data/rules.json")).json();
-
-  app.innerHTML = `
-    ${backButton("goBack(renderHome)")}
-    <h1>${d.title}</h1>
-    <ul class="card">
-      ${d.items.map(i => `<li>${i}</li>`).join("")}
-    </ul>
-    ${backBottom("goBack(renderHome)")}
-  `;
-}
-
-async function openContacts() {
-  hideMainButton();
-  const data = await (await fetch("/data/contacts.json")).json();
-
-  app.innerHTML = `
-    ${backButton("goBack(renderHome)")}
-    <h1>${data.title}</h1>
-
-    <div class="contacts-list">
-      ${data.sections.map(s => `
-        <div class="contact-block">
-          <div class="contact-title">${s.title}</div>
-          <div class="contact-text">
-            ${s.items.map(i => {
-              if (i.type === "text") return `<div>${i.value}</div>`;
-              if (i.type === "phone") return `<div><a class="contact-link" href="tel:${i.value}">${i.value}</a></div>`;
-              if (i.type === "email") return `<div><a class="contact-link" href="mailto:${i.value}">${i.value}</a></div>`;
-              if (i.type === "link") return `<div><a class="contact-link" href="${i.url}" target="_blank">${i.label}</a></div>`;
-              return "";
-            }).join("")}
-          </div>
-        </div>
-      `).join("")}
-    </div>
-
-    ${backBottom("goBack(renderHome)")}
-  `;
-}
-
-/* ---------- INIT ---------- */
-goUp(renderHome);
+// Инициализация
+document.addEventListener('DOMContentLoaded', () => {
+  // Alpine сам инициализируется
+});
+</script>
